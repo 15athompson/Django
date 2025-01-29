@@ -1,0 +1,67 @@
+cd hotel_management
+
+python manage.py makemigrations
+python manage.py migrate
+
+python manage.py runserver
+
+   
+----------
+
+username: aidan_1k98io6
+
+passwords:
+
+superuser: 23Mar004
+
+-----------
+
+access:
+
+[Starting development server at http://127.0.0.1:8000/]
+
+access the admin panel at localhost:8000/admin/ to manage your hotel data
+
+
+---------
+
+RESTful API endpoints
+
+curl -u aidan_1k98io6:23Mar004 -X GET http://localhost:8000/api/rooms/
+
+Examples:
+
+List all rooms:
+
+curl -X GET http://localhost:8000/api/rooms/
+
+Create a new guest:
+
+curl -X POST -H "Content-Type: application/json" -d '{"first_name": "John", "last_name": "Doe", "email": "john.doe@example.com", "phone": "1234567890"}' http://localhost:8000/api/guests/
+
+Update a booking (PATCH for partial update):
+
+curl -X PATCH -H "Content-Type: application/json" -d '{"total_cost": "250.00"}' http://localhost:8000/api/bookings/1/
+
+Delete a service:
+
+curl -X DELETE http://localhost:8000/api/services/1/
+
+
+----------
+
+from rest_framework.authtoken.models import Token
+from django.contrib.auth.models import User
+
+user = User.objects.get(username='aidan_1k98io6')  # Replace with your actual username
+token, created = Token.objects.get_or_create(user=user)
+print(token.key)
+
+
+from rest_framework.authtoken.models import Token
+from django.contrib.auth.models import User
+
+user = User.objects.get(username='aidan_1k98io6')
+token = Token.objects.create(user=user)
+print(token.key)
+

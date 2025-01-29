@@ -1,0 +1,36 @@
+<!-- hotel_app/templates/hotel_app/room_list.html -->
+{% extends 'hotel_app/base.html' %}
+
+{% block title %}Available Rooms{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Available Rooms</h2>
+    <div class="row">
+        {% for room in rooms %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Room {{ room.number }}</h5>
+                    <p class="card-text"><strong>Type:</strong> {{ room.room_type }}</p>
+                    <p class="card-text"><strong>Price:</strong> ${{ room.price }}/night</p>
+                    <p class="card-text"><strong>Capacity:</strong> {{ room.capacity }} guests</p>
+                    <p class="card-text"><strong>Description:</strong> {{ room.description }}</p>
+                    <p class="card-text"><strong>Status:</strong> {% if room.is_available %}Available{% else %}Occupied{% endif %}</p>
+                    {% if room.is_available %}
+                    <a href="{% url 'booking_form' %}?room_id={{ room.id }}" class="btn btn-primary">Book Now</a>
+                    {% else %}
+                    <button class="btn btn-secondary" disabled>Not Available</button>
+                    {% endif %}
+                    <a href="{% url 'room_detail' room.id %}" class="btn btn-info">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col">
+            <p>No rooms available at the moment.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

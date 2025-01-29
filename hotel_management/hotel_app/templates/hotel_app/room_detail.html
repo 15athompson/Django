@@ -1,0 +1,23 @@
+{% extends 'hotel_app/base.html' %}
+
+{% block title %}Room Details{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h2 class="card-title">Room {{ room.number }}</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>Type:</strong> {{ room.room_type }}</p>
+                <p><strong>Price:</strong> ${{ room.price }}/night</p>
+                <p><strong>Capacity:</strong> {{ room.capacity }} persons</p>
+                <p><strong>Status:</strong> {% if room.is_available %}Available{% else %}Occupied{% endif %}</p>
+                <p><strong>Description:</strong> {{ room.description }}</p>
+                {% if room.is_available %}
+                <a href="{% url 'booking_form' %}?room_id={{ room.id }}" class="btn btn-primary">Book Now</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

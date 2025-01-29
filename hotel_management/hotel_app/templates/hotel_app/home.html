@@ -1,0 +1,28 @@
+{% extends 'hotel_app/base.html' %}
+
+{% block title %}Welcome to Our Hotel{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+    <h1 class="display-4">Welcome to Our Hotel</h1>
+    <p class="lead">Experience luxury and comfort at its finest.</p>
+    <hr class="my-4">
+    <p>Browse our rooms and make a reservation today!</p>
+    <a class="btn btn-primary btn-lg" href="{% url 'room_list' %}" role="button">View Rooms</a>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-4">
+        <h3>Luxury Rooms</h3>
+        <p>Experience our premium accommodations with stunning views.</p>
+    </div>
+    <div class="col-md-4">
+        <h3>Fine Dining</h3>
+        <p>Enjoy exquisite cuisine at our world-class restaurant.</p>
+    </div>
+    <div class="col-md-4">
+        <h3>Premium Services</h3>
+        <p>24/7 concierge service to meet all your needs.</p>
+    </div>
+</div>
+{% endblock %}

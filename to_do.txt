@@ -1,0 +1,21 @@
+// CRUD operations and text fields
+
+---------------
+
+how do i view the bookings. | API endpoints | logout
+
+
+to do:
+
+what it should do (to catch up):
+- API endpoints (how to view through URL)
+- logout
+
+
+
+
+done:
+- HTML page must be rendered for the rooms and detail rooms available
+- show a list of bookings made 
+- complete booking when click submit button and take the user to a confirmation page
+- the database should automatically update showing the completed booking 

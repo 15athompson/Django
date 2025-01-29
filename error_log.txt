@@ -1,0 +1,25 @@
+PS C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management> python manage.py runserver
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2025 - 22:22:47
+Django version 5.1.5, using settings 'hotel_management.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+
+[29/Jan/2025 22:22:52] "GET /rooms/ HTTP/1.1" 200 2942
+Room list view called
+Available rooms: <QuerySet [<Room: Room 4 - A>, <Room: Room 5 - L>]>
+[29/Jan/2025 22:22:55] "GET /rooms/rooms/ HTTP/1.1" 200 4013
+Room list view called
+Available rooms: <QuerySet [<Room: Room 4 - A>, <Room: Room 5 - L>]>
+[29/Jan/2025 22:22:59] "GET /rooms/rooms/ HTTP/1.1" 200 4013
+[29/Jan/2025 22:23:02] "GET /rooms/bookings/ HTTP/1.1" 200 3640
+[29/Jan/2025 22:23:04] "GET /rooms/booking/ HTTP/1.1" 200 3275
+Room list view called
+Available rooms: <QuerySet [<Room: Room 4 - A>, <Room: Room 5 - L>]>
+[29/Jan/2025 22:23:06] "GET /rooms/rooms/ HTTP/1.1" 200 4013
+[29/Jan/2025 22:23:09] "GET /rooms/rooms/2/ HTTP/1.1" 200 2778
+[29/Jan/2025 22:23:12] "GET /rooms/booking/?room_id=2 HTTP/1.1" 200 3276
+[29/Jan/2025 22:23:30] "POST /rooms/booking/?room_id=2 HTTP/1.1" 200 3405

@@ -1,0 +1,29 @@
+List all rooms:
+
+curl -X GET http://localhost:8000/api/rooms/
+
+[{"id":1,"room_number":2,"room_type":"A","price_per_night":"4.00","capacity":1,"is_available":true}]
+
+---
+
+Create a new guest:
+
+curl -u aidan_1k98io6:23Mar004 -X POST -H "Content-Type: application/json" -d "{\"first_name\": \"John\", \"last_name\": \"Doe\", \"email\": \"john.doe@example.com\", \"phone\": \"1234567890\"}" http://localhost:8000/api/guests/
+
+{"id":2,"first_name":"John","last_name":"Doe","email":"john.doe@example.com","phone":"1234567890"}
+
+---
+
+Update a booking (PATCH for partial update):
+
+curl -X PATCH -H "Content-Type: application/json" -d "{\"total_cost\": \"250.00\"}" http://localhost:8000/api/bookings/1/
+
+{"id":1,"check_in_date":"2025-01-08","check_out_date":"2025-01-28","total_cost":"250.00","room":1,"guest":2}
+
+---
+
+Delete a service:
+
+curl -X DELETE http://localhost:8000/api/services/1/
+
+[no output if successful, otherwise: {"detail":"No Service matches the given query."} ]

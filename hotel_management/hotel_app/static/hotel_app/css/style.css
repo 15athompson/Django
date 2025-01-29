@@ -1,0 +1,10 @@
+/* Custom styles */
+.room-card {
+    transition: transform 0.3s;
+}
+
+.room-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Add more custom styles as needed */

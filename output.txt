@@ -1,0 +1,210 @@
+PS C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django> cd hotel_management
+PS C:\Users\aidapython manage.py makemigrations of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management> python manage.py startapp hotel_app
+>> python manage.py migrateneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management>
+Migrations for 'hotel_app':
+  hotel_app\migrations\0001_initial.py
+    + Create model Guest
+    + Create model Room
+    + Create model Booking
+Operations to perform:
+  Apply all migrations: admin, auth, contenttypes, hotel_app, sessions
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying auth.0001_initial... OK
+  Applying admin.0001_initial... OK
+  Applying admin.0002_logentry_remove_auto_add... OK
+  Applying admin.0003_logentry_add_action_flag_choices... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying auth.0009_alter_user_last_name_max_length... OK
+  Applying auth.0011_update_proxy_permissions... OK
+  Applying auth.0012_alter_user_first_name_max_length... OK
+  Applying hotel_app.0001_initial... OK
+  Applying sessions.0001_initial... OK
+tel_management>
+                                                                                                                     python manage.py makemigrations
+No changes detected
+PS C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management>
+
+Operations to perform:
+  Apply all migrations: admin, auth, contenttypes, hotel_app, sessions
+Running migrations:
+  No migrations to apply.
+PS C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management>
+                                                                                                                     python manage.py createsuperuser
+Username (leave blank to use 'aidan_1k98io6'): 
+Email address:
+Password:
+Error: Blank passwords aren't allowed.
+Password:
+Password (again):
+Superuser created successfully.
+PS C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management>
+                                                                                                                     python manage.py runserver
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 27, 2025 - 21:54:06
+Django version 5.1.5, using settings 'hotel_management.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+
+[27/Jan/2025 21:54:23] "GET / HTTP/1.1" 200 12068
+Not Found: /favicon.ico
+[27/Jan/2025 21:54:30] "GET /favicon.ico HTTP/1.1" 404 2218
+[27/Jan/2025 21:55:05] "GET /admin/ HTTP/1.1" 302 0
+[27/Jan/2025 21:55:06] "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4160
+[27/Jan/2025 21:55:06] "GET /static/admin/css/base.css HTTP/1.1" 200 22092
+[27/Jan/2025 21:55:06] "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2810
+[27/Jan/2025 21:55:06] "GET /static/admin/css/login.css HTTP/1.1" 200 951
+[27/Jan/2025 21:55:06] "GET /static/admin/css/dark_mode.css HTTP/1.1" 200 2804
+[27/Jan/2025 21:55:06] "GET /static/admin/css/responsive.css HTTP/1.1" 200 17972
+[27/Jan/2025 21:55:07] "GET /static/admin/js/theme.js HTTP/1.1" 200 1653
+[27/Jan/2025 21:55:07] "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 3063
+Not Found: /favicon.ico
+[27/Jan/2025 21:55:13] "GET /favicon.ico HTTP/1.1" 404 2218
+[27/Jan/2025 21:56:18] "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+[27/Jan/2025 21:56:19] "GET /admin/ HTTP/1.1" 200 7905
+[27/Jan/2025 21:56:19] "GET /static/admin/css/dashboard.css HTTP/1.1" 200 441
+[27/Jan/2025 21:56:20] "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+[27/Jan/2025 21:56:20] "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+[27/Jan/2025 21:56:55] "GET /admin/auth/group/add/ HTTP/1.1" 200 13492
+[27/Jan/2025 21:56:56] "GET /static/admin/css/forms.css HTTP/1.1" 200 8794
+[27/Jan/2025 21:56:56] "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+[27/Jan/2025 21:56:56] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[27/Jan/2025 21:56:56] "GET /static/admin/js/core.js HTTP/1.1" 200 6208
+[27/Jan/2025 21:56:56] "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 9097        
+[27/Jan/2025 21:56:56] "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+[27/Jan/2025 21:56:56] "GET /static/admin/js/SelectBox.js HTTP/1.1" 200 4530
+[27/Jan/2025 21:56:56] "GET /static/admin/js/actions.js HTTP/1.1" 200 8076
+[27/Jan/2025 21:56:56] "GET /static/admin/js/SelectFilter2.js HTTP/1.1" 200 15502
+[27/Jan/2025 21:56:56] "GET /static/admin/js/urlify.js HTTP/1.1" 200 7887
+[27/Jan/2025 21:56:56] "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+[27/Jan/2025 21:56:56] "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 200 586
+[27/Jan/2025 21:56:56] "GET /static/admin/css/widgets.css HTTP/1.1" 200 11564
+[27/Jan/2025 21:56:56] "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 325171
+[27/Jan/2025 21:56:56] "GET /static/admin/js/change_form.js HTTP/1.1" 200 606
+[27/Jan/2025 21:56:58] "GET /static/admin/img/icon-unknown-alt.svg HTTP/1.1" 200 655
+[27/Jan/2025 21:56:58] "GET /static/admin/img/icon-unknown.svg HTTP/1.1" 200 655
+[27/Jan/2025 21:56:58] "GET /static/admin/img/selector-icons.svg HTTP/1.1" 200 3291
+[27/Jan/2025 21:56:58] "GET /static/admin/img/search.svg HTTP/1.1" 200 458
+[27/Jan/2025 21:57:23] "POST /admin/auth/group/add/ HTTP/1.1" 302 0
+[27/Jan/2025 21:57:23] "GET /admin/auth/group/add/ HTTP/1.1" 200 13727
+[27/Jan/2025 21:57:23] "GET /static/admin/css/base.css HTTP/1.1" 304 0
+[27/Jan/2025 21:57:23] "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+[27/Jan/2025 21:57:23] "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+[27/Jan/2025 21:57:23] "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+[27/Jan/2025 21:57:23] "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+[27/Jan/2025 21:57:23] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[27/Jan/2025 21:57:23] "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+[27/Jan/2025 21:57:23] "GET /static/admin/img/icon-yes.svg HTTP/1.1" 200 436
+[27/Jan/2025 21:57:31] "GET /admin/auth/group/1/change/ HTTP/1.1" 200 14064
+[27/Jan/2025 21:57:31] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[27/Jan/2025 21:57:41] "GET /admin/auth/group/1/delete/ HTTP/1.1" 200 11300
+[27/Jan/2025 21:57:41] "GET /static/admin/js/cancel.js HTTP/1.1" 200 884
+[27/Jan/2025 21:57:51] "GET /admin/auth/group/1/change/ HTTP/1.1" 200 14064
+[27/Jan/2025 21:57:57] "GET /admin/auth/group/add/ HTTP/1.1" 200 13492
+[27/Jan/2025 21:57:58] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[27/Jan/2025 21:58:01] "GET /admin/auth/user/add/ HTTP/1.1" 200 13289
+[27/Jan/2025 21:58:01] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[27/Jan/2025 21:58:01] "GET /static/admin/css/unusable_password_field.css HTTP/1.1" 200 663
+[27/Jan/2025 21:58:01] "GET /static/admin/js/unusable_password_field.js HTTP/1.1" 200 1480
+[27/Jan/2025 21:58:14] "GET /admin/auth/user/add/ HTTP/1.1" 200 13289
+[27/Jan/2025 21:58:19] "GET /admin/hotel_app/room/ HTTP/1.1" 200 8672
+[27/Jan/2025 21:58:19] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[27/Jan/2025 21:58:19] "GET /static/admin/css/changelists.css HTTP/1.1" 200 6878
+[27/Jan/2025 21:58:19] "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 200 331
+[27/Jan/2025 21:58:19] "GET /static/admin/js/filters.js HTTP/1.1" 200 978
+[27/Jan/2025 21:58:23] "GET /admin/hotel_app/guest/ HTTP/1.1" 200 8679
+[27/Jan/2025 21:58:25] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[27/Jan/2025 21:58:34] "GET /admin/hotel_app/guest/add/ HTTP/1.1" 200 11362
+[27/Jan/2025 21:58:34] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[27/Jan/2025 21:59:04] "POST /admin/hotel_app/guest/add/ HTTP/1.1" 302 0
+[27/Jan/2025 21:59:04] "GET /admin/hotel_app/guest/ HTTP/1.1" 200 10183
+[27/Jan/2025 21:59:04] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[27/Jan/2025 21:59:04] "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0
+[27/Jan/2025 21:59:08] "GET /admin/hotel_app/guest/1/change/ HTTP/1.1" 200 11670
+[27/Jan/2025 21:59:09] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+
+
+------------------------
+
+PS C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management> python manage.py runserver
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2025 - 16:04:44
+Django version 5.1.5, using settings 'hotel_management.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+
+[29/Jan/2025 16:04:58] "GET / HTTP/1.1" 200 2785
+[29/Jan/2025 16:05:22] "GET /api/ HTTP/1.1" 200 2785
+[29/Jan/2025 16:06:02] "GET /api/ HTTP/1.1" 200 2785
+[29/Jan/2025 16:06:13] "GET /api/rooms/ HTTP/1.1" 200 2835
+[29/Jan/2025 16:06:37] "GET /api/rooms/ HTTP/1.1" 200 2835
+[29/Jan/2025 16:06:41] "GET /api/booking/ HTTP/1.1" 200 3083
+[29/Jan/2025 16:06:50] "GET /api/rooms/ HTTP/1.1" 200 2835
+[29/Jan/2025 16:06:53] "GET /api/rooms/1/ HTTP/1.1" 200 2613
+[29/Jan/2025 16:07:03] "GET /api/booking/?room_id=1 HTTP/1.1" 200 3083
+[29/Jan/2025 16:07:21] "GET /api/rooms/2/ HTTP/1.1" 200 2613
+[29/Jan/2025 16:07:24] "GET /api/booking/ HTTP/1.1" 200 3083
+[29/Jan/2025 16:07:38] "GET /api/booking/?room_id=2 HTTP/1.1" 200 3083
+[29/Jan/2025 16:08:11] "POST /api/booking/?room_id=2 HTTP/1.1" 200 3083
+[29/Jan/2025 16:08:19] "GET /api/ HTTP/1.1" 200 2785
+[29/Jan/2025 16:08:25] "GET /api/rooms/ HTTP/1.1" 200 2835
+[29/Jan/2025 16:08:33] "GET /api/rooms/2/ HTTP/1.1" 200 2613
+[29/Jan/2025 16:08:38] "GET /api/booking/?room_id=2 HTTP/1.1" 200 3083
+C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management\hotel_app\urls.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 29, 2025 - 16:09:18
+Django version 5.1.5, using settings 'hotel_management.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+
+[29/Jan/2025 16:09:39] "POST /api/booking/?room_id=2 HTTP/1.1" 200 3083
+
+
+-------------------------
+
+[29/Jan/2025 16:33:38] "POST /api/booking/ HTTP/1.1" 500 159571
+[29/Jan/2025 16:33:58] "GET /api/ HTTP/1.1" 200 2785
+[29/Jan/2025 16:34:01] "GET /api/rooms/ HTTP/1.1" 200 2835
+[29/Jan/2025 16:34:04] "GET /api/rooms/1/ HTTP/1.1" 200 2613
+[29/Jan/2025 16:34:11] "GET /api/booking/?room_id=1 HTTP/1.1" 200 3134
+[29/Jan/2025 16:34:34] "POST /api/booking/?room_id=1 HTTP/1.1" 302 0
+[29/Jan/2025 16:34:34] "GET /api/booking/confirmation/2/ HTTP/1.1" 200 3186
+[29/Jan/2025 16:35:02] "GET /admin/ HTTP/1.1" 200 11284
+[29/Jan/2025 16:35:11] "GET /admin/hotel_app/booking/ HTTP/1.1" 200 12091
+[29/Jan/2025 16:35:13] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[29/Jan/2025 16:35:18] "GET /admin/hotel_app/booking/2/change/ HTTP/1.1" 200 18032
+[29/Jan/2025 16:35:20] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[29/Jan/2025 16:35:42] "GET /api/rooms/ HTTP/1.1" 200 2835
+[29/Jan/2025 16:35:48] "GET /api/rooms/2/ HTTP/1.1" 200 2613
+[29/Jan/2025 16:35:53] "GET /api/booking/?room_id=2 HTTP/1.1" 200 3134
+[29/Jan/2025 16:36:18] "POST /api/booking/?room_id=2 HTTP/1.1" 302 0
+[29/Jan/2025 16:36:18] "GET /api/booking/confirmation/3/ HTTP/1.1" 200 3326
+[29/Jan/2025 16:36:41] "GET /admin/ HTTP/1.1" 200 11284
+[29/Jan/2025 16:36:46] "GET /admin/hotel_app/bookingservice/ HTTP/1.1" 200 10522
+[29/Jan/2025 16:36:47] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[29/Jan/2025 16:36:51] "GET /admin/ HTTP/1.1" 200 11159
+[29/Jan/2025 16:36:55] "GET /admin/hotel_app/booking/ HTTP/1.1" 200 12394
+[29/Jan/2025 16:36:56] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[29/Jan/2025 16:36:59] "GET /admin/hotel_app/booking/3/change/ HTTP/1.1" 200 18035
+[29/Jan/2025 16:36:59] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[29/Jan/2025 16:37:06] "GET /api/ HTTP/1.1" 200 2785
+[29/Jan/2025 16:37:47] "GET / HTTP/1.1" 200 2785
+Method Not Allowed (GET): /logout/
+Method Not Allowed: /logout/
+[29/Jan/2025 16:38:03] "GET /logout/ HTTP/1.1" 405 0
