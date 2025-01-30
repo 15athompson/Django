@@ -6,10 +6,16 @@ how do i view the bookings. | API endpoints | logout
 
 
 to do:
+- fix url issues like: http://localhost:8000/rooms/ and http://localhost:8000/rooms/rooms/
+- guest capacity limits (informative error message if too many) and message for wrong check in/out dates
+- must specify a room id that exists when select "Book A Room"
+- API endpoints (how to view through URL)
+- logout / login
+
+- add contents to main.js
 
 what it should do (to catch up):
-- API endpoints (how to view through URL)
-- logout
+
 
 
 

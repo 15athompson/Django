@@ -22,6 +22,8 @@ access:
 
 access the admin panel at localhost:8000/admin/ to manage your hotel data
 
+http://localhost:8000/rooms/
+
 
 ---------
 

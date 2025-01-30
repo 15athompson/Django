@@ -208,3 +208,31 @@ Quit the server with CTRL-BREAK.
 Method Not Allowed (GET): /logout/
 Method Not Allowed: /logout/
 [29/Jan/2025 16:38:03] "GET /logout/ HTTP/1.1" 405 0
+
+
+-------------------
+
+[29/Jan/2025 23:19:56] "POST /rooms/booking/?room_id=2 HTTP/1.1" 302 0
+[29/Jan/2025 23:19:56] "GET /rooms/booking/confirmation/6/ HTTP/1.1" 200 3347
+[29/Jan/2025 23:20:08] "GET /rooms/ HTTP/1.1" 200 2942
+[29/Jan/2025 23:59:37] "GET /admin/hotel_app/room/ HTTP/1.1" 200 12395
+[29/Jan/2025 23:59:42] "GET /admin/ HTTP/1.1" 200 12234
+[29/Jan/2025 23:59:43] "GET /static/admin/css/dashboard.css HTTP/1.1" 304 0
+[29/Jan/2025 23:59:43] "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+[29/Jan/2025 23:59:43] "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0
+[29/Jan/2025 23:59:43] "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 304 0
+[29/Jan/2025 23:59:48] "GET /admin/hotel_app/service/ HTTP/1.1" 200 10468
+[29/Jan/2025 23:59:50] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[29/Jan/2025 23:59:53] "GET /admin/hotel_app/service/add/ HTTP/1.1" 200 12503
+[29/Jan/2025 23:59:53] "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 304 0
+[29/Jan/2025 23:59:53] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[29/Jan/2025 23:59:53] "GET /static/admin/css/forms.css HTTP/1.1" 304 0
+[29/Jan/2025 23:59:54] "GET /static/admin/css/widgets.css HTTP/1.1" 304 0
+[29/Jan/2025 23:59:54] "GET /static/admin/js/change_form.js HTTP/1.1" 304 0
+[30/Jan/2025 00:00:01] "POST /admin/hotel_app/service/add/ HTTP/1.1" 200 12689
+[30/Jan/2025 00:00:01] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[30/Jan/2025 00:00:08] "POST /admin/hotel_app/service/add/ HTTP/1.1" 302 0
+[30/Jan/2025 00:00:08] "GET /admin/hotel_app/service/ HTTP/1.1" 200 11988
+[30/Jan/2025 00:00:08] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[30/Jan/2025 00:00:11] "GET /admin/ HTTP/1.1" 200 12595
+[30/Jan/2025 00:06:17] "GET /rooms/booking/ HTTP/1.1" 200 3311
