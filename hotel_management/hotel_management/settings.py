@@ -148,3 +148,4 @@ REST_FRAMEWORK = {
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 LOGIN_REDIRECT_URL = 'home'  # Redirect to home after login
+LOGOUT_REDIRECT_URL = 'logout_success' # Redirect to logout success page after logout

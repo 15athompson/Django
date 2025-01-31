@@ -3,6 +3,14 @@ from rest_framework.routers import DefaultRouter
 from . import views
 from django.contrib.auth import views as auth_views
 
+from django.urls import reverse
+
+class CustomLogoutView(auth_views.LogoutView):
+    next_page = 'logout_success'  # Redirect to the logout success page
+
+    def get_next_page(self):
+        return reverse('logout_success')
+
 
 # Create a router for RESTful API endpoints
 router = DefaultRouter()
@@ -27,5 +35,6 @@ urlpatterns = [
     path('booking/confirmation/<int:booking_id>/', views.booking_confirmation, name='booking_confirmation'),  # Booking confirmation view
     path('bookings/', views.booking_list, name='booking_list'),  # Booking list view
     path('login/', auth_views.LoginView.as_view(template_name='hotel_app/login.html'), name='login'),  # Login view
-    path('logout/', auth_views.LogoutView.as_view(next_page='home'), name='logout'),  # Logout view
+    path('logout/', CustomLogoutView.as_view(), name='logout'),  # Use the custom logout view
+    path('logout/success/', views.logout_success, name='logout_success'),  # Optional: Redirect to a success page
 ]

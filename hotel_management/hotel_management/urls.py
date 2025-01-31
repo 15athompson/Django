@@ -26,5 +26,4 @@ urlpatterns = [
     path('rooms/', include('hotel_app.urls')),  # Include room URLs
     path('api/', include('hotel_app.api_urls')),  # Include API URLs
     path('login/', auth_views.LoginView.as_view(template_name='hotel_app/login.html'), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(next_page='home'), name='logout'),
 ]

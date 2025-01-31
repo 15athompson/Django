@@ -10,7 +10,8 @@ to do:
 - guest capacity limits (informative error message if too many) and message for wrong check in/out dates
 - must specify a room id that exists when select "Book A Room"
 - API endpoints (how to view through URL)
-- logout / login
+- logout redirect
+- format login page
 
 - add contents to main.js
 

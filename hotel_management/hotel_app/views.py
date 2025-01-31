@@ -136,3 +136,21 @@ def booking_confirmation(request, booking_id):
     return render(request, 'hotel_app/booking_confirmation.html', {
         'booking': booking
     })
+
+def logout_success(request):
+    return render(request, 'hotel_app/logout.html')
+
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+
+def custom_login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('home')  # Redirect to a success page
+        else:
+            return render(request, 'hotel_app/login.html', {'error': 'Invalid credentials'})
+    return render(request, 'hotel_app/login.html')
