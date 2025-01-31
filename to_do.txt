@@ -4,13 +4,16 @@
 
 how do i view the bookings. | API endpoints | logout
 
+to prompt:
+- suggest improvements that can be made to the project
+-  now suggest how to improve the project and implement them whilst using a test driven development approach
+- now suggest how to improve the project and implement them. you musr do this step by step so we can easily isolate and detect errors and revert back to a previous change if needed. prioritise maintaining and improving functionality above all else.
 
 to do:
-- fix url issues like: http://localhost:8000/rooms/ and http://localhost:8000/rooms/rooms/
-- guest capacity limits (informative error message if too many) and message for wrong check in/out dates
-- must specify a room id that exists when select "Book A Room"
+
+- must specify a room id that exists when select "Book A Room" from the navigation bar
+- shouldn't be able to book the same room again, should display room unavailable when go to "Rooms" on navigation bar 
 - API endpoints (how to view through URL)
-- logout redirect
 - format login page
 
 - add contents to main.js
@@ -26,3 +29,6 @@ done:
 - show a list of bookings made 
 - complete booking when click submit button and take the user to a confirmation page
 - the database should automatically update showing the completed booking 
+- logout redirect
+- fix url issues like: http://localhost:8000/rooms/ and http://localhost:8000/rooms/rooms/
+- guest capacity limits (informative error message if too many) and message for wrong check in/out dates

@@ -102,15 +102,30 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def booking_form(request):
     room_id = request.GET.get('room_id')  # Get room_id from query parameters
-    room = get_object_or_404(Room, id=room_id) if room_id else None  # Fetch the room or return 404
+    
+    if room_id:
+        room = get_object_or_404(Room, id=room_id)  # Fetch the room or return 404
+        initial_data = {'room': room}
+    else:
+        room = None
+        initial_data = {}
 
     if request.method == 'POST':
         form = BookingForm(request.POST)  # Bind form data to the form
         if form.is_valid():
             # Create a booking object but don't save it yet
             booking = form.save(commit=False)
-            booking.room = room  # Assign the room to the booking
+            if room:
+                booking.room = room  # Assign the room to the booking
             booking.guest = request.user  # Assign the logged-in user as the guest
+            
+            if booking.room and booking.guests > booking.room.capacity:
+                 messages.error(request, f"Number of guests exceeds the room capacity of {booking.room.capacity}")
+                 return render(request, 'hotel_app/booking_form.html', {
+                     'form': form,
+                     'room': room
+                 })
+            
             booking.save()  # Save the booking to the database
 
             # Display a success message
@@ -120,10 +135,11 @@ def booking_form(request):
             return redirect('booking_confirmation', booking_id=booking.id)
         else:
             # If the form is invalid, display error messages
-            messages.error(request, 'Please correct the errors below.')
-            print("Form errors:", form.errors)  # Print form errors to the console for debugging
+            for error in form.errors.values():
+                for msg in error:
+                    messages.error(request, msg)
     else:
-        form = BookingForm()  # Display an empty form for GET requests
+        form = BookingForm(initial=initial_data)  # Display an empty form for GET requests, or pre-filled with room
 
     # Render the booking form template with the form and room context
     return render(request, 'hotel_app/booking_form.html', {
