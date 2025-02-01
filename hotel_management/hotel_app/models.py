@@ -13,6 +13,12 @@ class Room(models.Model):
     def __str__(self):
         return f"Room {self.number} - {self.room_type}"
 
+    def save(self, *args, **kwargs):
+        if self.pk is None and Room.objects.filter(number=self.number).exists():
+            from django.core.exceptions import ValidationError
+            raise ValidationError(f"Room with number {self.number} already exists.")
+        super().save(*args, **kwargs)
+
 class Guest(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
@@ -64,5 +70,3 @@ class Staff(models.Model):
         ('reception', 'Reception'),
         ('maintenance', 'Maintenance'),
     ])
-
-

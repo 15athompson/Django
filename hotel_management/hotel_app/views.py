@@ -7,6 +7,20 @@ class RoomViewSet(viewsets.ModelViewSet):
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
 
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        if Room.objects.filter(number=serializer.validated_data['number']).exists():
+            return Response(
+                {"error": "Room with this number already exists."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
 class GuestViewSet(viewsets.ModelViewSet):
     queryset = Guest.objects.all()
     serializer_class = GuestSerializer
@@ -63,11 +77,14 @@ from .models import Room, Booking
 def home(request):
     return render(request, 'hotel_app/home.html')
 
+from django.utils import timezone
+
 def room_list(request):
-    print("Room list view called")  # Debugging line
-    rooms = Room.objects.filter(is_available=True)  # Only show available rooms
-    print(f"Available rooms: {rooms}")  # Debugging line
-    return render(request, 'hotel_app/room_list.html', {'rooms': rooms})
+    print("Room list view called")
+    rooms = Room.objects.all()
+    bookings = Booking.objects.filter(check_in__lt=timezone.now().date(), check_out__gt=timezone.now().date())
+    print(f"Available rooms: {rooms}")
+    return render(request, 'hotel_app/room_list.html', {'rooms': rooms, 'bookings': bookings})
 
 def room_detail(request, pk):
     room = get_object_or_404(Room, pk=pk)

@@ -4,12 +4,23 @@ from . import views
 from django.contrib.auth import views as auth_views
 
 from django.urls import reverse
+from django.shortcuts import redirect
 
 class CustomLogoutView(auth_views.LogoutView):
     next_page = 'logout_success'  # Redirect to the logout success page
 
     def get_next_page(self):
         return reverse('logout_success')
+
+    def dispatch(self, request, *args, **kwargs):
+        response = super().dispatch(request, *args, **kwargs)
+        if not request.user.is_authenticated:
+            redirect_response = redirect(self.get_next_page())
+            redirect_response['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+            redirect_response['Pragma'] = 'no-cache'
+            redirect_response['Expires'] = '0'
+            return redirect_response
+        return response
 
 
 # Create a router for RESTful API endpoints

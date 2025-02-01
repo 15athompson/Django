@@ -22,6 +22,7 @@ from hotel_app.views import home  # Import the home view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('admin/logout/', auth_views.LogoutView.as_view(next_page='/admin/login/?next=/admin/'), name='admin_logout'),
     path('', home, name='home'),  # Home page
     path('', include('hotel_app.urls')),  # Include room URLs
     path('api/', include('hotel_app.api_urls')),  # Include API URLs

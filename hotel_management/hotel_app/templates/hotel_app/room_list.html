@@ -16,11 +16,41 @@
                     <p class="card-text"><strong>Price:</strong> ${{ room.price }}/night</p>
                     <p class="card-text"><strong>Capacity:</strong> {{ room.capacity }} guests</p>
                     <p class="card-text"><strong>Description:</strong> {{ room.description }}</p>
-                    <p class="card-text"><strong>Status:</strong> {% if room.is_available %}Available{% else %}Occupied{% endif %}</p>
-                    {% if room.is_available %}
-                    <a href="{% url 'booking_form' %}?room_id={{ room.id }}" class="btn btn-primary">Book Now</a>
+                    <p class="card-text"><strong>Status:</strong> 
+                        {% if bookings %}
+                            {% with is_booked=False %}
+                                {% for booking in bookings %}
+                                    {% if booking.room == room %}
+                                        {% with is_booked=True %}
+                                        {% endwith %}
+                                    {% endif %}
+                                {% endfor %}
+                                {% if is_booked %}
+                                    Unavailable
+                                {% else %}
+                                    Available
+                                {% endif %}
+                            {% endwith %}
+                        {% else %}
+                            Available
+                        {% endif %}
+                    </p>
+                    {% if bookings %}
+                        {% with is_booked=False %}
+                            {% for booking in bookings %}
+                                {% if booking.room == room %}
+                                    {% with is_booked=True %}
+                                    {% endwith %}
+                                {% endif %}
+                            {% endfor %}
+                            {% if is_booked %}
+                                <button class="btn btn-secondary" disabled>Not Available</button>
+                            {% else %}
+                                <a href="{% url 'booking_form' %}?room_id={{ room.id }}" class="btn btn-primary">Book Now</a>
+                            {% endif %}
+                        {% endwith %}
                     {% else %}
-                    <button class="btn btn-secondary" disabled>Not Available</button>
+                        <a href="{% url 'booking_form' %}?room_id={{ room.id }}" class="btn btn-primary">Book Now</a>
                     {% endif %}
                     <a href="{% url 'room_detail' room.id %}" class="btn btn-info">View Details</a>
                 </div>
