@@ -5,16 +5,26 @@
 how do i view the bookings. | API endpoints | logout
 
 to prompt:
+[unit tests for the system, not just unit tests testing what is just in tests.py
+; test-driven development [TDD] ]
+--> make tests compatible with the existing project, not the other way around
+--> create system tests for this project in a file named system_tests3.py (using deepseek)
+
+- 
+[other tests: performance (load, stress, scalability, stability), usability, compatibility]
+- refactor and optimise code
 - suggest improvements that can be made to the project
+- now for user clarification, a room should be classed as "unavailable" when navigating to "Rooms" if the room has already been booked, and the "Book Now" button should be shaded out and the user should not be able to click on it
 -  now suggest how to improve the project and implement them whilst using a test driven development approach
 - now suggest how to improve the project and implement them. you musr do this step by step so we can easily isolate and detect errors and revert back to a previous change if needed. prioritise maintaining and improving functionality above all else.
 
 to do:
-
-- must specify a room id that exists when select "Book A Room" from the navigation bar
-- shouldn't be able to book the same room again, should display room unavailable when go to "Rooms" on navigation bar 
+- if in the RestAPI endpoint i specify that a room is not available (checkbox) at http://localhost:8000/api/rooms/, then it should not show the room as available at http://127.0.0.1:8000/rooms/
+- prevent double bookings (done) -> should display room unavailable when go to "Rooms" on navigation bar --> book now button should be disabled
+- the user should not be able to add a room to the database if that room already exists in the database --> should just show error message, not success message
+- when admin log out, it should take to admin log out screen so they can log back in and return to admin home screen. for instance, when i click logout from this url "http://localhost:8000/admin/hotel_app/room/ " it  goes to this url "http://localhost:8000/logout/success/ ", instead of this url "http://localhost:8000/admin/login/?next=/admin/hotel_app/room/ "
 - API endpoints (how to view through URL)
-- format login page
+- format login page (login page when go to url, instead of already being logged in)
 
 - add contents to main.js
 
@@ -32,3 +42,5 @@ done:
 - logout redirect
 - fix url issues like: http://localhost:8000/rooms/ and http://localhost:8000/rooms/rooms/
 - guest capacity limits (informative error message if too many) and message for wrong check in/out dates
+- must specify a room id that exists when select "Book A Room" from the navigation bar
+

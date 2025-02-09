@@ -12,6 +12,7 @@
                     <tr>
                         <th>Booking ID</th>
                         <th>Room</th>
+                        <th>Room Type</th>
                         <th>Check-in</th>
                         <th>Check-out</th>
                         <th>Guests</th>
@@ -23,6 +24,7 @@
                     <tr>
                         <td>{{ booking.id }}</td>
                         <td>Room {{ booking.room.number }}</td>
+                        <td>{{ booking.room.room_type }}</td>
                         <td>{{ booking.check_in }}</td>
                         <td>{{ booking.check_out }}</td>
                         <td>{{ booking.guests }}</td>

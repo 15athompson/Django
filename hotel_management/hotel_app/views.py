@@ -80,19 +80,21 @@ def home(request):
 from django.utils import timezone
 
 def room_list(request):
-    print("Room list view called")
     rooms = Room.objects.all()
     bookings = Booking.objects.filter(check_in__lt=timezone.now().date(), check_out__gt=timezone.now().date())
-    print(f"Available rooms: {rooms}")
     return render(request, 'hotel_app/room_list.html', {'rooms': rooms, 'bookings': bookings})
 
 def room_detail(request, pk):
     room = get_object_or_404(Room, pk=pk)
     return render(request, 'hotel_app/room_detail.html', {'room': room})
 
+from django.contrib.auth.decorators import login_required
+
+@login_required
 def booking_list(request):
-       bookings = Booking.objects.all()  # Fetch all bookings
-       return render(request, 'hotel_app/booking_list.html', {'bookings': bookings})
+    bookings = Booking.objects.filter(guest=request.user)  # Fetch bookings for the logged-in user
+    print(f"Bookings: {bookings}")
+    return render(request, 'hotel_app/booking_list.html', {'bookings': bookings})
 
 class RoomListView(ListView):
     model = Room

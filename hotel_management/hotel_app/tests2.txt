@@ -1,0 +1,51 @@
+from django.test import TestCase, Client
+from django.contrib.auth.models import User
+from django.urls import reverse
+from django.utils import timezone
+from .models import Room, Booking, Guest
+from .forms import BookingForm
+from .middleware import AdminLogoutCSRFMiddleware
+import datetime
+
+class IntegrationTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.room = Room.objects.create(
+            number=201,
+            room_type='Deluxe',
+            price=200.00,
+            capacity=4
+        )
+        self.user = User.objects.create_user(
+            username='testguest',
+            password='testpass123'
+        )
+        self.guest = Guest.objects.create(
+            first_name='Integration',
+            last_name='TestGuest',
+            email='integration@example.com',
+            phone='0987654321'
+        )
+
+    def test_booking_flow(self):
+        # User logs in
+        self.client.login(username='testguest', password='testpass123')
+
+        # User views room detail page
+        response = self.client.get(reverse('room_detail', args=[self.room.id]))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Deluxe')
+
+        # User submits booking form
+        booking_data = {
+            'check_in': '2025-03-10',
+            'check_out': '2025-03-15',
+            'guest_count': 2
+        }
+        response = self.client.post(reverse('book_room', args=[self.room.id]), booking_data)
+        self.assertEqual(response.status_code, 302) # Redirect after booking
+
+        # Booking is created
+        booking = Booking.objects.filter(guest=self.guest, room=self.room).first()
+        self.assertIsNotNone(booking)
+        self.assertEqual(booking.guest_count, 2)

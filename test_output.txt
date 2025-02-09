@@ -1,0 +1,531 @@
+unit tests:
+
+update: 8 unit tests all passed (successfully)
+
+PS C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management> python manage.py test hotel_app
+Found 8 test(s).
+Creating test database for alias 'default'...
+System check identified some issues:
+
+WARNINGS:
+?: (staticfiles.W004) The directory 'C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management\static' in the STATICFILES_DIRS setting does not exist.
+
+System check identified 1 issue (0 silenced).
+........
+----------------------------------------------------------------------
+Ran 8 tests in 2.736s
+
+OK
+Destroying test database for alias 'default'...
+
+-------------------
+
+the booking view login error that had to be fixed:
+
+FAIL: test_booking_view_requires_login (hotel_app.tests.ViewTests.test_booking_view_requires_login) for this code: "def test_booking_view_requires_login(self):
+response = self.client.get(reverse('booking_form'))
+self.assertRedirects(response, f'/accounts/login/?next=/booking/')"
+
+
+-----------------
+
+311\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\models\query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\models\base.py", line 892, in save
+    self.save_base(
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\models\base.py", line 998, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\models\base.py", line 1161, in _save_table
+    results = self._do_insert(
+              ^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\models\base.py", line 1202, in _do_insert
+    return manager._insert(
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\models\query.py", line 1847, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\models\sql\compiler.py", line 1836, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\backends\sqlite3\base.py", line 354, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.IntegrityError: NOT NULL constraint failed: hotel_app_booking.guests
+
+======================================================================
+ERROR: test_guest_relationship (hotel_app.tests.ModelTests.test_guest_relationship)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\backends\sqlite3\base.py", line 354, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.IntegrityError: NOT NULL constraint failed: hotel_app_booking.guests
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management\hotel_app\tests.py", line 28, in setUp
+    self.booking = Booking.objects.create(
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\models\query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\models\base.py", line 892, in save
+    self.save_base(
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\models\base.py", line 998, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\models\base.py", line 1161, in _save_table
+    results = self._do_insert(
+              ^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\models\base.py", line 1202, in _do_insert
+    return manager._insert(
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\models\query.py", line 1847, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\models\sql\compiler.py", line 1836, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\backends\sqlite3\base.py", line 354, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.IntegrityError: NOT NULL constraint failed: hotel_app_booking.guests
+
+======================================================================
+ERROR: test_room_creation (hotel_app.tests.ModelTests.test_room_creation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\backends\sqlite3\base.py", line 354, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.IntegrityError: NOT NULL constraint failed: hotel_app_booking.guests
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management\hotel_app\tests.py", line 28, in setUp
+    self.booking = Booking.objects.create(
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\models\query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\models\base.py", line 892, in save
+    self.save_base(
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\models\base.py", line 998, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\models\base.py", line 1161, in _save_table
+    results = self._do_insert(
+              ^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\models\base.py", line 1202, in _do_insert
+    return manager._insert(
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\models\query.py", line 1847, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\models\sql\compiler.py", line 1836, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\db\backends\sqlite3\base.py", line 354, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.IntegrityError: NOT NULL constraint failed: hotel_app_booking.guests
+
+======================================================================
+ERROR: test_authenticated_booking_view (hotel_app.tests.ViewTests.test_authenticated_booking_view) 
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management\hotel_app\tests.py", line 70, in test_authenticated_booking_view
+    response = self.client.get(reverse('book_room', args=[self.room.id]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'book_room' not found. 'book_room' is not a valid view function or pattern name.
+
+======================================================================
+ERROR: test_booking_view_requires_login (hotel_app.tests.ViewTests.test_booking_view_requires_login)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management\hotel_app\tests.py", line 65, in test_booking_view_requires_login
+    response = self.client.get(reverse('book_room', args=[self.room.id]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'book_room' not found. 'book_room' is not a valid view function or pattern name.
+
+======================================================================
+FAIL: test_valid_booking_form (hotel_app.tests.FormTests.test_valid_booking_form)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management\hotel_app\tests.py", line 81, in test_valid_booking_form
+    self.assertTrue(form.is_valid())
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 9 tests in 3.487s
+
+FAILED (failures=1, errors=5)
+Destroying test database for alias 'default'...
+PS C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management> python manage.py test hotel_app
+Found 9 test(s).
+Creating test database for alias 'default'...
+System check identified some issues:
+
+WARNINGS:
+?: (staticfiles.W004) The directory 'C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management\static' in the STATICFILES_DIRS setting does not exist.
+
+System check identified 1 issue (0 silenced).
+.F..EFEE.
+======================================================================
+ERROR: test_guest_relationship (hotel_app.tests.ModelTests.test_guest_relationship)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management\hotel_app\tests.py", line 44, in test_guest_relationship
+    self.assertEqual(self.guest.user.username, 'testuser')
+                     ^^^^^^^^^^^^^^^
+AttributeError: 'Guest' object has no attribute 'user'
+
+======================================================================
+ERROR: test_authenticated_booking_view (hotel_app.tests.ViewTests.test_authenticated_booking_view) 
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management\hotel_app\tests.py", line 71, in test_authenticated_booking_view
+    response = self.client.get(reverse('book_room', args=[self.room.id]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'book_room' not found. 'book_room' is not a valid view function or pattern name.
+
+======================================================================
+ERROR: test_booking_view_requires_login (hotel_app.tests.ViewTests.test_booking_view_requires_login)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management\hotel_app\tests.py", line 66, in test_booking_view_requires_login
+    response = self.client.get(reverse('book_room', args=[self.room.id]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'book_room' not found. 'book_room' is not a valid view function or pattern name.
+
+======================================================================
+FAIL: test_valid_booking_form (hotel_app.tests.FormTests.test_valid_booking_form)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management\hotel_app\tests.py", line 82, in test_valid_booking_form
+    self.assertTrue(form.is_valid())
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_room_creation (hotel_app.tests.ModelTests.test_room_creation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management\hotel_app\tests.py", line 38, in test_room_creation
+    self.assertEqual(str(self.room), '101 - Standard')
+AssertionError: 'Room 101 - Standard' != '101 - Standard'
+- Room 101 - Standard
+? -----
++ 101 - Standard
+
+
+----------------------------------------------------------------------
+Ran 9 tests in 2.997s
+
+FAILED (failures=2, errors=3)
+Destroying test database for alias 'default'...
+PS C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management> python manage.py test hotel_app
+Found 9 test(s).
+Creating test database for alias 'default'...
+System check identified some issues:
+
+WARNINGS:
+?: (staticfiles.W004) The directory 'C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management\static' in the STATICFILES_DIRS setting does not exist.
+
+System check identified 1 issue (0 silenced).
+.F..EFEE.
+======================================================================
+ERROR: test_guest_relationship (hotel_app.tests.ModelTests.test_guest_relationship)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management\hotel_app\tests.py", line 44, in test_guest_relationship
+    self.assertEqual(self.guest.user.username, 'testuser')
+                     ^^^^^^^^^^^^^^^
+AttributeError: 'Guest' object has no attribute 'user'
+
+======================================================================
+ERROR: test_authenticated_booking_view (hotel_app.tests.ViewTests.test_authenticated_booking_view) 
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management\hotel_app\tests.py", line 71, in test_authenticated_booking_view
+    response = self.client.get(reverse('book_room', args=[self.room.id]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'book_room' not found. 'book_room' is not a valid view function or pattern name.
+
+======================================================================
+ERROR: test_booking_view_requires_login (hotel_app.tests.ViewTests.test_booking_view_requires_login)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management\hotel_app\tests.py", line 66, in test_booking_view_requires_login
+    response = self.client.get(reverse('book_room', args=[self.room.id]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'book_room' not found. 'book_room' is not a valid view function or pattern name.
+
+======================================================================
+FAIL: test_valid_booking_form (hotel_app.tests.FormTests.test_valid_booking_form)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management\hotel_app\tests.py", line 82, in test_valid_booking_form
+    self.assertTrue(form.is_valid())
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_room_creation (hotel_app.tests.ModelTests.test_room_creation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management\hotel_app\tests.py", line 38, in test_room_creation
+    self.assertEqual(str(self.room), '101 - Standard')
+AssertionError: 'Room 101 - Standard' != '101 - Standard'
+- Room 101 - Standard
+? -----
++ 101 - Standard
+
+
+----------------------------------------------------------------------
+Destroying test database for alias 'default'...
+PS C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management>
+
+
+                  python manage.py test hotel_app
+Found 8 test(s).
+Creating test database for alias 'default'...
+System check identified some issues:
+
+WARNINGS:
+?: (staticfiles.W004) The directory 'C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management\static' in the STATICFILES_DIRS setting does not exist.
+
+System check identified 1 issue (0 silenced).
+......F.
+======================================================================
+FAIL: test_booking_view_requires_login (hotel_app.tests.ViewTests.test_booking_view_requires_login)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management\hotel_app\tests.py", line 65, in test_booking_view_requires_login
+    self.assertRedirects(response, f'/accounts/login/?next=/booking/')
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\test\testcases.py", line 525, in assertRedirects
+    self.assertURLEqual(
+  File "C:\Users\aidan_1k98io6\AppData\Roaming\Python\Python311\site-packages\django\test\testcases.py", line 552, in assertURLEqual
+    self.assertEqual(
+AssertionError: '/login/?next=%2Fbooking%2F' != '/accounts/login/?next=%2Fbooking%2F'
+- /login/?next=%2Fbooking%2F
++ /accounts/login/?next=%2Fbooking%2F
+? +++++++++
+ : Response redirected to '/login/?next=/booking/', expected '/accounts/login/?next=/booking/': Expected '/login/?next=/booking/' to equal '/accounts/login/?next=/booking/'.
+
+----------------------------------------------------------------------
+Ran 8 tests in 2.505s
+
+FAILED (failures=1)
+Destroying test database for alias 'default'...
+PS C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management> python manage.py test hotel_app
+Found 7 test(s).
+Creating test database for alias 'default'...
+System check identified some issues:
+
+WARNINGS:
+?: (staticfiles.W004) The directory 'C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management\static' in the STATICFILES_DIRS setting does not exist.
+
+System check identified 1 issue (0 silenced).
+.......
+----------------------------------------------------------------------
+Ran 7 tests in 1.840s
+
+OK
+Destroying test database for alias 'default'...
+
+
+
+
+
+
+
+-------------------------------
+
+
+integration tests:
+
+PS C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management> python manage.py test hotel_app.integration_tests
+Found 1 test(s).
+Creating test database for alias 'default'...
+System check identified some issues:
+
+WARNINGS:
+?: (staticfiles.W004) The directory 'C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management\static' in the STATICFILES_DIRS setting does not exist.   
+
+System check identified 1 issue (0 silenced).
+.
+----------------------------------------------------------------------
+Ran 1 test in 1.498s
+
+OK
+Destroying test database for alias 'default'...
+
+
+
+
+---
+
+
+Creating test database for alias 'default'...
+System check identified some issues:
+
+WARNINGS:
+?: (staticfiles.W004) The directory 'C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management\static' in the STATICFILES_DIRS setting does not exist.   
+
+System check identified 1 issue (0 silenced).
+F
+======================================================================
+FAIL: test_successful_booking (hotel_app.integration_tests.BookingIntegrationTests.test_successful_booking)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management\hotel_app\integration_tests.py", line 28, in test_successful_booking
+    self.assertEqual(Booking.objects.count(), 1)
+AssertionError: 0 != 1
+
+----------------------------------------------------------------------
+Ran 1 test in 0.063s
+
+FAILED (failures=1)
+Destroying test database for alias 'default'...
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------
+
+
+System Tests: 
+
+Ran 1 test in 1.436s
+
+OK
+Destroying test database for alias 'default'...
+
+Ran 4 tests in 6.592s
+
+OK
+Destroying test database for alias 'default'...
+
+Ran 4 tests in 7.951s
+
+FAILED (failures=1)
+Destroying test database for alias 'default'...
+PS C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management> python manage.py test hotel_app.system_tests
+Found 4 test(s).
+Creating test database for alias 'default'...
+System check identified some issues:
+
+WARNINGS:
+?: (staticfiles.W004) The directory 'C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management\static' in the STATICFILES_DIRS setting does not exist.       
+
+System check identified 1 issue (0 silenced).
+...Bookings: <QuerySet []>
+F
+======================================================================
+FAIL: test_viewing_booking_list (hotel_app.system_tests.SystemTests.test_viewing_booking_list)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django\hotel_management\hotel_app\system_tests.py", line 73, in test_viewing_booking_list
+    self.assertTrue(room_type_present)
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 4 tests in 8.731s

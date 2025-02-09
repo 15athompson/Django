@@ -1,0 +1,68 @@
+test
+
+echo "# Django" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/15athompson/Django.git
+git push -u origin main
+
+
+---------------------------
+
+
+Steps to Push Code to GitHub
+Open the Terminal: Open your command line interface (Terminal on macOS/Linux, Command Prompt or PowerShell on Windows).
+
+Navigate to Your Project Directory: Use the cd command to change to the directory of your project.
+
+bash
+
+cd path/to/your/project
+Initialize Git Repository (if needed): If you haven't already initialized a Git repository, do so with the following command.
+
+bash
+
+git init
+Add Remote Repository (if needed): If this is your first time pushing to this repository, you need to link it to your local repository. Replace USERNAME and REPO with your GitHub username and the name of your GitHub repository.
+
+bash
+
+git remote add origin https://github.com/USERNAME/REPO.git
+Check the Status: See which files are changed or untracked.
+
+bash
+
+git status
+Add Files to Staging: Add the files you want to include in your commit. You can add all files using:
+
+bash
+
+git add .
+Or specify a single file:
+
+bash
+
+git add filename
+Commit Your Changes: Create a commit with a message describing your changes.
+
+bash
+
+git commit -m "Your commit message here"
+Push to GitHub: Push your changes to the GitHub repository. If this is your first push, you may want to specify the branch (usually main or master).
+
+bash
+
+git push origin main
+If your branch is named differently, replace main with your branch name.
+
+Authenticate (if prompted): If you haven’t set up SSH keys or if you are using HTTPS, you may be prompted to enter your GitHub username and password or personal access token.
+
+Additional Tips
+Setup SSH (optional): Consider setting up SSH keys for easier authentication with your GitHub account.
+Push to a Different Branch: Create and push to a new branch with:
+bash
+
+git checkout -b new-branch-name
+git push origin new-branch-name
