@@ -2,8 +2,66 @@
 
 {% block title %}My Bookings{% endblock %}
 
+{% block extra_head %}
+<script>
+    // Check if we're navigating back after a deletion
+    window.onpageshow = function(event) {
+        if (event.persisted || window.performance && window.performance.navigation.type === 2) {
+            // Check if there's a deletion message
+            const messages = document.querySelectorAll('.alert');
+            for (let message of messages) {
+                if (message.textContent.includes('no longer exists')) {
+                    // Redirect to home page
+                    window.location.href = '{% url "home" %}';
+                    break;
+                }
+            }
+        }
+    };
+
+    // Also check on initial page load
+    document.addEventListener('DOMContentLoaded', function() {
+        const messages = document.querySelectorAll('.alert');
+        for (let message of messages) {
+            if (message.textContent.includes('no longer exists')) {
+                // Add a small delay to ensure the message is seen
+                setTimeout(function() {
+                    window.location.href = '{% url "home" %}';
+                }, 1500);
+                break;
+            }
+        }
+    });
+</script>
+{% endblock %}
+
 {% block content %}
+{% if booking_deleted %}
+<script>
+    // Set the deletion flag in sessionStorage
+    sessionStorage.setItem('bookingDeleted', 'true');
+</script>
+{% endif %}
 <div class="container mt-4">
+    {% if messages %}
+        {% for message in messages %}
+            {% if 'no longer exists' in message.message %}
+                <div class="alert alert-info d-flex align-items-center border-info" role="alert" style="background-color: #f8f9fa; border-left: 5px solid #0dcaf0;">
+                    <div class="me-3">
+                        <i class="fas fa-info-circle text-info" style="font-size: 1.5rem;"></i>
+                    </div>
+                    <div>
+                        <h5 class="alert-heading mb-1">Booking Not Found</h5>
+                        <p class="mb-0">{{ message }}</p>
+                    </div>
+                </div>
+            {% else %}
+                <div class="alert alert-{% if message.tags %}{{ message.tags }}{% endif %}" role="alert">
+                    {{ message }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
     <h2>Bookings</h2>
     <a href="{% url 'create_booking' %}" class="btn btn-primary mb-3">Create New Booking</a>
     {% if bookings %}

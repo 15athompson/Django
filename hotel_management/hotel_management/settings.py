@@ -52,6 +52,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "hotel_app.middleware.DeletedBookingMiddleware",
 ]
 
 ROOT_URLCONF = "hotel_management.urls"

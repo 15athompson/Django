@@ -25,8 +25,8 @@ class BookingForm(forms.ModelForm):
         # print(timezone.now().date())
         # print(check_in)
 
-        if check_in and check_in < timezone.now().date():
-            raise forms.ValidationError({'check_in': "Check-in date cannot be in the past"})
+        # if check_in and check_in < timezone.now().date():
+        #     raise forms.ValidationError({'check_in': "Check-in date cannot be in the past"})
 
         if room and check_in and check_out:
             overlapping_bookings = Booking.objects.filter(

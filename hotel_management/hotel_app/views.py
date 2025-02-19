@@ -196,8 +196,15 @@ def booking_form(request):
             except ValidationError as e:
                 messages.error(request, str(e))
         else:
-            for error in form.errors.values():
-                messages.error(request, error)
+            # Handle non-field errors (form-wide errors)
+            if form.non_field_errors():
+                for error in form.non_field_errors():
+                    messages.error(request, error)
+            # Handle field-specific errors
+            for field, errors in form.errors.items():
+                if field != '__all__':  # Skip __all__ errors as they're handled above
+                    for error in errors:
+                        messages.error(request, f"{field.capitalize()}: {error}")
     else:
         form = BookingForm(initial=initial_data)
 
@@ -210,8 +217,29 @@ def booking_form(request):
 
 @login_required
 def booking_list(request):
+    # Get the referring URL and deletion info from session
+    referer = request.META.get('HTTP_REFERER', '')
+    deletion_time = request.session.get('booking_deleted_time')
+    is_back_button = request.headers.get('Sec-Fetch-Site') == 'none'
+
+    # Only show message if:
+    # 1. Coming from delete URL
+    # 2. Using back button (not redirect)
+    # 3. Deletion happened recently (within last minute)
+    if (deletion_time and
+        '/bookings/delete/' in referer and
+        is_back_button):
+        # and
+        # (timezone.now() - timezone.datetime.fromtimestamp(deletion_time)).seconds < 60):
+        messages.error(request, 'The booking you were viewing no longer exists.')
+        del request.session['booking_deleted_time']
+
     bookings = Booking.objects.filter(guest=request.user).order_by('-created_at')
-    return render(request, 'hotel_app/booking_list.html', {'bookings': bookings})
+
+    context = {
+        'bookings': bookings,
+    }
+    return render(request, 'hotel_app/booking_list.html', context)
 
 @login_required
 def create_booking(request):
@@ -229,7 +257,12 @@ def create_booking(request):
 
 @login_required
 def edit_booking(request, booking_id):
-    booking = get_object_or_404(Booking, id=booking_id)
+    try:
+        booking = get_object_or_404(Booking, id=booking_id)
+    except:
+        messages.error(request, 'This booking no longer exists.')
+        return redirect('booking_list')
+
     if request.method == 'POST':
         form = BookingForm(request.POST, instance=booking)
         if form.is_valid():
@@ -248,16 +281,64 @@ def edit_booking(request, booking_id):
                         messages.error(request, error)
     else:
         form = BookingForm(instance=booking)
-    return render(request, 'hotel_app/booking_edit.html', {'form': form, 'booking': booking})
+
+    response = render(request, 'hotel_app/booking_edit.html', {'form': form, 'booking': booking})
+    # Add cache control headers
+    response['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response['Pragma'] = 'no-cache'
+    response['Expires'] = '0'
+    return response
 
 @login_required
 def delete_booking(request, booking_id):
-    booking = get_object_or_404(Booking, id=booking_id)
+    # Check if the booking exists in the database
+    booking = Booking.objects.filter(id=booking_id, guest=request.user).first()
+
+    if not booking:
+        # Check if this is a back button press after deletion
+        if str(booking_id) == str(request.session.get('deleted_booking_id')):
+            # Check if this is the second back button press
+            back_count = request.session.get('back_button_count', 0)
+            if back_count >= 1:
+                # Second back press - redirect to home
+                if 'back_button_count' in request.session:
+                    del request.session['back_button_count']
+                if 'deleted_booking_id' in request.session:
+                    del request.session['deleted_booking_id']
+                response = redirect('home')
+            else:
+                # First back press - stay on bookings page with error
+                request.session['back_button_count'] = back_count + 1
+                messages.error(request, 'The booking you were viewing no longer exists.')
+                response = redirect('booking_list')
+        else:
+            # Direct access to non-existent booking
+            messages.error(request, 'The booking you were viewing no longer exists.')
+            response = redirect('home')
+
+        response['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+        response['Pragma'] = 'no-cache'
+        response['Expires'] = '0'
+        return response
+
     if request.method == 'POST':
+        # Store the booking ID in session before deleting
+        request.session['deleted_booking_id'] = booking_id
+        request.session['back_button_count'] = 0
         booking.delete()
         messages.success(request, 'Booking deleted successfully.')
-        return redirect('booking_list')
-    return render(request, 'hotel_app/booking_confirm_delete.html', {'booking': booking})
+        response = redirect('booking_list')
+        response['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+        response['Pragma'] = 'no-cache'
+        response['Expires'] = '0'
+        return response
+
+    # For GET requests, render the confirmation page with cache control headers
+    response = render(request, 'hotel_app/booking_confirm_delete.html', {'booking': booking})
+    response['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response['Pragma'] = 'no-cache'
+    response['Expires'] = '0'
+    return response
 
 def booking_confirmation(request, booking_id):
     booking = get_object_or_404(Booking, id=booking_id)

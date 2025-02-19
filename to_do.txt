@@ -5,8 +5,8 @@
 how do i view the bookings. | API endpoints | logout
 
 to prompt:
-- make booking_edit page look more presentable
-- error message styling when booking a room just like the style when editing a room
+-  when i click the back button again after getting the message "The booking you were viewing no longer exists.", i must be redirected to home page
+- browser history, back button should return to previous screen after user is informed booking no longer exists
 [unit tests for the system, not just unit tests testing what is just in tests.py
 ; test-driven development [TDD] ]
 --> make tests compatible with the existing project, not the other way around
@@ -57,6 +57,9 @@ what it should do (to catch up):
 
 
 done:
+- error message styling when booking a room just like the style when editing a room
+- shouldn't get the same error message twice that check-in data cannot be in the past, it should only appear under check-in date like for when booking a room
+- make booking_edit page look more presentable
 - add a back button to each screen to improve navigation for the user
 - hotel_app/forms.py: Implement custom validation logic in BookingForm to prevent overlapping bookings and enforce business rules.
 - HTML page must be rendered for the rooms and detail rooms available
