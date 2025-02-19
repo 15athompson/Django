@@ -9,59 +9,77 @@
 {% block title %}Edit Booking{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <h2 class="mb-4">Edit Booking</h2>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="h4 mb-0"><i class="fas fa-edit me-2"></i>Edit Booking</h2>
+                </div>
+                <div class="card-body p-4">
+                    {% include 'hotel_app/includes/form_errors.html' %}
 
-    {% include 'hotel_app/includes/form_errors.html' %}
-
-<form method="post" action="{% url 'edit_booking' booking.id %}">
-    {% csrf_token %}
-    <div class="mb-3">
-        <label for="room" class="form-label">Room</label>
-        {{ form.room.as_widget }}
-        {% if form.room.errors %}
-        <div class="text-danger">
-            {{ form.room.errors }}
+                    <form method="post" action="{% url 'edit_booking' booking.id %}" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <label for="room" class="form-label fw-bold">Room</label>
+                            {{ form.room.as_widget }}
+                            {% if form.room.errors %}
+                            <div class="text-danger mt-1">
+                                <small>{{ form.room.errors }}</small>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label for="check_in" class="form-label fw-bold">Check-in Date</label>
+                                {{ form.check_in.as_widget }}
+                                {% if form.check_in.errors %}
+                                <div class="text-danger mt-1">
+                                    <small>{{ form.check_in.errors }}</small>
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="check_out" class="form-label fw-bold">Check-out Date</label>
+                                {{ form.check_out.as_widget }}
+                                {% if form.check_out.errors %}
+                                <div class="text-danger mt-1">
+                                    <small>{{ form.check_out.errors }}</small>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="guests" class="form-label fw-bold">Number of Guests</label>
+                            {{ form.guests.as_widget }}
+                            {% if form.guests.errors %}
+                            <div class="text-danger mt-1">
+                                <small>{{ form.guests.errors }}</small>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-4">
+                            <label for="special_requests" class="form-label fw-bold">Special Requests</label>
+                            {{ form.special_requests.as_widget }}
+                            {% if form.special_requests.errors %}
+                            <div class="text-danger mt-1">
+                                <small>{{ form.special_requests.errors }}</small>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="d-flex justify-content-end gap-2">
+                            <a href="{% url 'booking_list' %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-1"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i>Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-        {% endif %}
     </div>
-    <div class="mb-3">
-        <label for="check_in" class="form-label">Check-in Date</label>
-        {{ form.check_in.as_widget }}
-        {% if form.check_in.errors %}
-        <div class="text-danger">
-            {{ form.check_in.errors }}
-        </div>
-        {% endif %}
-    </div>
-    <div class="mb-3">
-        <label for="check_out" class="form-label">Check-out Date</label>
-        {{ form.check_out.as_widget }}
-        {% if form.check_out.errors %}
-        <div class="text-danger">
-            {{ form.check_out.errors }}
-        </div>
-        {% endif %}
-    </div>
-    <div class="mb-3">
-        <label for="guests" class="form-label">Number of Guests</label>
-        {{ form.guests.as_widget }}
-        {% if form.guests.errors %}
-        <div class="text-danger">
-            {{ form.guests.errors }}
-        </div>
-        {% endif %}
-    </div>
-    <div class="mb-3">
-        <label for="special_requests" class="form-label">Special Requests</label>
-        {{ form.special_requests.as_widget }}
-        {% if form.special_requests.errors %}
-        <div class="text-danger">
-            {{ form.special_requests.errors }}
-        </div>
-        {% endif %}
-    </div>
-    <button type="submit" class="btn btn-primary">Save Changes</button>
-    <a href="{% url 'booking_list' %}" class="btn btn-secondary">Cancel</a>
-</form>
+</div>
 {% endblock %}
