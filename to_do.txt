@@ -5,6 +5,7 @@
 how do i view the bookings. | API endpoints | logout
 
 to prompt:
+- hotel_app/forms.py: Implement custom validation logic in BookingForm to prevent overlapping bookings and enforce business rules.
 [unit tests for the system, not just unit tests testing what is just in tests.py
 ; test-driven development [TDD] ]
 --> make tests compatible with the existing project, not the other way around

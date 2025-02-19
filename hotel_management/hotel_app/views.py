@@ -237,7 +237,9 @@ def edit_booking(request, booking_id):
             messages.success(request, 'Booking updated successfully.')
             return redirect('booking_list')
         else:
-            print(form.errors)
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
             messages.error(request, 'Please correct the errors below.')
     else:
         form = BookingForm(instance=booking)
