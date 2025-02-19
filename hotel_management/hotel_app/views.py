@@ -237,10 +237,15 @@ def edit_booking(request, booking_id):
             messages.success(request, 'Booking updated successfully.')
             return redirect('booking_list')
         else:
+            # Handle non-field errors (form-wide errors)
+            if form.non_field_errors():
+                for error in form.non_field_errors():
+                    messages.error(request, error)
+            # Handle field-specific errors
             for field, errors in form.errors.items():
-                for error in errors:
-                    messages.error(request, f"{field}: {error}")
-            messages.error(request, 'Please correct the errors below.')
+                if field != '__all__':  # Skip __all__ errors as they're handled above
+                    for error in errors:
+                        messages.error(request, error)
     else:
         form = BookingForm(instance=booking)
     return render(request, 'hotel_app/booking_edit.html', {'form': form, 'booking': booking})

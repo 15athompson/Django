@@ -1,19 +1,18 @@
 {% extends 'hotel_app/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'hotel_app/css/custom.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+{% endblock %}
 
 {% block title %}Edit Booking{% endblock %}
 
 {% block content %}
-<h2>Edit Booking</h2>
+<div class="container mt-4">
+    <h2 class="mb-4">Edit Booking</h2>
 
-{% if messages %}
-<div class="messages">
-    {% for message in messages %}
-    <div class="alert alert-{{ message.tags }}">
-        {{ message }}
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
+    {% include 'hotel_app/includes/form_errors.html' %}
 
 <form method="post" action="{% url 'edit_booking' booking.id %}">
     {% csrf_token %}
