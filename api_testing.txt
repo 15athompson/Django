@@ -27,3 +27,33 @@ Delete a service:
 curl -X DELETE http://localhost:8000/api/services/1/
 
 [no output if successful, otherwise: {"detail":"No Service matches the given query."} ]
+
+
+
+
+--------------------------------------
+
+
+
+PS C:\Users\aidan_1k98io6\OneDrive - University of Suffolk (1)\Level 5\Software Engineering\Django - Copy - Copy> curl http://127.0.0.1:8006/api/                                                                                                                                                                                                                                      
+
+StatusCode        : 200
+StatusDescription : OK
+Content           : {"rooms":"http://127.0.0.1:8006/api/rooms/","guests":"http://127.0.0.1:8006/api/guests/","bookings":"htt
+                    p://127.0.0.1:8006/api/bookings/","payments":"http://127.0.0.1:8006/api/payments/","services":"h...      
+RawContent        : HTTP/1.1 200 OK
+                    Vary: Accept
+                    Allow: GET, HEAD, OPTIONS
+                    X-Frame-Options: DENY
+                    X-Content-Type-Options: nosniff
+                    Referrer-Policy: same-origin
+                    Cross-Origin-Opener-Policy: same-origin
+                    Content-Length:...
+Forms             : {}
+Headers           : {[Vary, Accept], [Allow, GET, HEAD, OPTIONS], [X-Frame-Options, DENY], [X-Content-Type-Options,
+                    nosniff]...}
+Images            : {}
+InputFields       : {}
+Links             : {}
+ParsedHtml        : mshtml.HTMLDocumentClass
+RawContentLength  : 342

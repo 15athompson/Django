@@ -1,9 +1,9 @@
 {% extends 'hotel_app/base.html' %}
 
-{% block title %}Book a Room{% endblock %}
+{% block title %}Edit Booking{% endblock %}
 
 {% block content %}
-<h2>Make a Reservation</h2>
+<h2>Edit Booking</h2>
 
 {% if messages %}
 <div class="messages">
@@ -15,7 +15,7 @@
 </div>
 {% endif %}
 
-<form method="post" action="{% url 'booking_form' %}?room_id={{ room.id }}">
+<form method="post" action="{% url 'edit_booking' booking.id %}">
     {% csrf_token %}
     <div class="mb-3">
         <label for="room" class="form-label">Room</label>
@@ -28,7 +28,7 @@
     </div>
     <div class="mb-3">
         <label for="check_in" class="form-label">Check-in Date</label>
-        <input type="date" class="form-control" id="check_in" name="check_in" required>
+        {{ form.check_in.as_widget }}
         {% if form.check_in.errors %}
         <div class="text-danger">
             {{ form.check_in.errors }}
@@ -37,7 +37,7 @@
     </div>
     <div class="mb-3">
         <label for="check_out" class="form-label">Check-out Date</label>
-        <input type="date" class="form-control" id="check_out" name="check_out" required>
+        {{ form.check_out.as_widget }}
         {% if form.check_out.errors %}
         <div class="text-danger">
             {{ form.check_out.errors }}
@@ -46,7 +46,7 @@
     </div>
     <div class="mb-3">
         <label for="guests" class="form-label">Number of Guests</label>
-        <input type="number" class="form-control" id="guests" name="guests" min="1" required>
+        {{ form.guests.as_widget }}
         {% if form.guests.errors %}
         <div class="text-danger">
             {{ form.guests.errors }}
@@ -55,18 +55,14 @@
     </div>
     <div class="mb-3">
         <label for="special_requests" class="form-label">Special Requests</label>
-        <textarea class="form-control" id="special_requests" name="special_requests" rows="3"></textarea>
+        {{ form.special_requests.as_widget }}
         {% if form.special_requests.errors %}
         <div class="text-danger">
             {{ form.special_requests.errors }}
         </div>
         {% endif %}
     </div>
-    {% if form.non_field_errors.errors %}
-    <div class="text-danger">
-        {{ form.non_field_errors.errors }}
-    </div>
-    {% endif %}
-    <button type="submit" class="btn btn-primary">Submit Booking</button>
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <a href="{% url 'booking_list' %}" class="btn btn-secondary">Cancel</a>
 </form>
 {% endblock %}

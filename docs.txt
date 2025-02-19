@@ -1,0 +1,698 @@
+Aidan Thompson, 1h ago
+improve the project
+
+Zencoder
+I'll help improve the project. Let me first analyze the current context and then make targeted improvements. I'll start by understanding more about the project structure and implementation.
+
+Let me search for some key files to understand the implementation better:
+
+Let me also check the models to understand the data structure:
+
+Based on my analysis of the codebase, I can identify several areas for improvement. Let me outline the key improvements I'll make:
+
+Room Availability Check Improvement
+The current room availability check in room_list.html is complex and inefficient
+We should move this logic to the model/view level
+Add proper date-based availability checking
+Booking Validation Enhancement
+Add validation for check-in/check-out dates
+Prevent overlapping bookings
+Add proper error handling
+Room Model Enhancement
+Add room status tracking
+Improve room availability logic
+Let's implement these improvements one by one:
+
+First, let's improve the Room model by adding better availability checking:
+I apologize for the error. Let me try again with the correct file content:
+
+Now let me make the improvements to the Room model:
+
+I apologize for the formatting issues. Let me try a different approach by creating a new file with the improvements and then copying it over:
+
+--- hotel_management/hotel_app/models_new.py
++++ hotel_management/hotel_app/models_new.py
+@@ -0,0 +1,146 @@
++from django.db import models
++from django.contrib.auth.models import User
++from django.utils import timezone
++from django.core.exceptions import ValidationError
++
++class Room(models.Model):
++    ROOM_TYPES = [
++        ('single', 'Single'),
++        ('double', 'Double'),
++        ('suite', 'Suite'),
++        ('deluxe', 'Deluxe'),
++    ]
++    
++    number = models.CharField(max_length=10, unique=True)
++    room_type = models.CharField(max_length=50, choices=ROOM_TYPES)
++    capacity = models.IntegerField()
++    price = models.DecimalField(max_digits=10, decimal_places=2)
++    description = models.TextField()
++    is_available = models.BooleanField(default=True)
++    
++    class Meta:
++        ordering = ['number']
++
++    def __str__(self):
++        return f"Room {self.number} - {self.room_type}"
++
++    def save(self, *args, **kwargs):
++        if self.pk is None and Room.objects.filter(number=self.number).exists():
++            raise ValidationError(f"Room with number {self.number} already exists.")
++        super().save(*args, **kwargs)
++        
++    def is_available_for_dates(self, check_in, check_out):
++        """
++        Check if the room is available for the given date range
++        """
++        from django.db.models import Q
++        overlapping_bookings = self.booking_set.filter(
++            Q(check_in__lte=check_out) & Q(check_out__gte=check_in)
++        ).exists()
++        return not overlapping_bookings
++        
++    def get_next_available_date(self):
++        """
++        Get the next available date for the room
++        """
++        today = timezone.now().date()
++        bookings = self.booking_set.filter(check_out__gte=today).order_by('check_out')
++        if not bookings:
++            return today
++        return bookings.last().check_out
++
++class Booking(models.Model):
++    guest = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
++    room = models.ForeignKey(Room, on_delete=models.CASCADE)
++    check_in = models.DateField()
++    check_out = models.DateField()
++    guests = models.IntegerField()
++    special_requests = models.TextField(blank=True, null=True)
++    created_at = models.DateTimeField(default=timezone.now)
++    
++    def clean(self):
++        if self.check_in and self.check_out:
++            if self.check_in >= self.check_out:
++                raise ValidationError("Check-out date must be after check-in date")
++            if self.check_in < timezone.now().date():
++                raise ValidationError("Check-in date cannot be in the past")
++            if not self.room.is_available_for_dates(self.check_in, self.check_out):
++                raise ValidationError("Room is not available for these dates")
++            if self.guests > self.room.capacity:
++                raise ValidationError(f"Number of guests exceeds room capacity of {self.room.capacity}")
++
++    def save(self, *args, **kwargs):
++        self.clean()
++        super().save(*args, **kwargs)
++
++    def __str__(self):
++        return f"Booking {self.id} - Room {self.room.number} for {self.guests} guests"
++
++    def get_total_price(self):
++        """
++        Calculate total price including room and services
++        """
++        from datetime import datetime
++        nights = (self.check_out - self.check_in).days
++        room_total = self.room.price * nights
++        service_total = sum(bs.service.price * bs.quantity for bs in self.bookingservice_set.all())
++        return room_total + service_total
++
++class Guest(models.Model):
++    first_name = models.CharField(max_length=50)
++    last_name = models.CharField(max_length=50)
++    email = models.EmailField(unique=True)
++    phone = models.CharField(max_length=20)
++
++    def __str__(self):
++        return f"{self.first_name} {self.last_name}"
++
++class Payment(models.Model):
++    PAYMENT_METHODS = [
++        ('credit_card', 'Credit Card'),
++        ('debit_card', 'Debit Card'),
++        ('cash', 'Cash'),
++        ('paypal', 'PayPal'),
++    ]
++    
++    booking = models.ForeignKey('Booking', on_delete=models.CASCADE)
++    amount = models.DecimalField(max_digits=10, decimal_places=2)
++    payment_date = models.DateTimeField(auto_now_add=True)
++    payment_method = models.CharField(max_length=50, choices=PAYMENT_METHODS)
++    transaction_id = models.CharField(max_length=100, unique=True)
++    
++    def __str__(self):
++        return f"Payment {self.transaction_id} for Booking {self.booking.id}"
++
++class Service(models.Model):
++    name = models.CharField(max_length=100)
++    price = models.DecimalField(max_digits=8, decimal_places=2)
++    description = models.TextField()
++    
++    def __str__(self):
++        return f"{self.name} (${self.price})"
++
++class BookingService(models.Model):
++    booking = models.ForeignKey('Booking', on_delete=models.CASCADE)
++    service = models.ForeignKey('Service', on_delete=models.CASCADE)
++    quantity = models.IntegerField(default=1)
++    
++    def __str__(self):
++        return f"{self.service.name} x{self.quantity} for Booking {self.booking.id}"
++
++class Staff(models.Model):
++    STAFF_ROLES = [
++        ('manager', 'Manager'),
++        ('housekeeping', 'Housekeeping'),
++        ('reception', 'Reception'),
++        ('maintenance', 'Maintenance'),
++    ]
++    
++    first_name = models.CharField(max_length=50)
++    last_name = models.CharField(max_length=50)
++    email = models.EmailField(unique=True)
++    phone = models.CharField(max_length=20)
++    role = models.CharField(max_length=50, choices=STAFF_ROLES)
++    
++    def __str__(self):
++        return f"{self.first_name} {self.last_name} - {self.get_role_display()}"
+Now let's improve the views to handle room availability better:
+
+--- hotel_management/hotel_app/views_new.py
++++ hotel_management/hotel_app/views_new.py
+@@ -0,0 +1,190 @@
++from django.shortcuts import render, redirect, get_object_or_404
++from django.contrib.auth.decorators import login_required
++from django.contrib import messages
++from django.utils import timezone
++from django.db.models import Q
++from rest_framework import viewsets, status
++from rest_framework.response import Response
++from .models import Room, Guest, Booking, Payment, Service, BookingService, Staff
++from .serializers import (
++    RoomSerializer, GuestSerializer, BookingSerializer,
++    PaymentSerializer, ServiceSerializer, BookingServiceSerializer,
++    StaffSerializer
++)
++from .forms import BookingForm
++
++class RoomViewSet(viewsets.ModelViewSet):
++    queryset = Room.objects.all()
++    serializer_class = RoomSerializer
++
++    def create(self, request, *args, **kwargs):
++        serializer = self.get_serializer(data=request.data)
++        serializer.is_valid(raise_exception=True)
++
++        if Room.objects.filter(number=serializer.validated_data['number']).exists():
++            return Response(
++                {"error": "Room with this number already exists."},
++                status=status.HTTP_400_BAD_REQUEST
++            )
++        
++        self.perform_create(serializer)
++        headers = self.get_success_headers(serializer.data)
++        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
++
++class BookingViewSet(viewsets.ModelViewSet):
++    queryset = Booking.objects.all()
++    serializer_class = BookingSerializer
++
++    def create(self, request, *args, **kwargs):
++        serializer = self.get_serializer(data=request.data)
++        serializer.is_valid(raise_exception=True)
++        
++        # Check room availability
++        room = get_object_or_404(Room, id=serializer.validated_data['room'].id)
++        check_in = serializer.validated_data['check_in']
++        check_out = serializer.validated_data['check_out']
++        
++        if not room.is_available_for_dates(check_in, check_out):
++            return Response(
++                {"error": "Room is not available for these dates"},
++                status=status.HTTP_400_BAD_REQUEST
++            )
++            
++        if serializer.validated_data['guests'] > room.capacity:
++            return Response(
++                {"error": f"Number of guests exceeds room capacity of {room.capacity}"},
++                status=status.HTTP_400_BAD_REQUEST
++            )
++            
++        self.perform_create(serializer)
++        headers = self.get_success_headers(serializer.data)
++        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
++
++def home(request):
++    available_rooms = Room.objects.filter(is_available=True)
++    return render(request, 'hotel_app/home.html', {'rooms': available_rooms})
++
++def room_list(request):
++    today = timezone.now().date()
++    check_in = request.GET.get('check_in')
++    check_out = request.GET.get('check_out')
++    guests = request.GET.get('guests')
++    room_type = request.GET.get('room_type')
++    
++    rooms = Room.objects.all()
++    
++    # Filter by availability if dates are provided
++    if check_in and check_out:
++        try:
++            check_in = timezone.datetime.strptime(check_in, '%Y-%m-%d').date()
++            check_out = timezone.datetime.strptime(check_out, '%Y-%m-%d').date()
++            
++            # Exclude rooms with overlapping bookings
++            unavailable_rooms = Room.objects.filter(
++                booking__check_in__lt=check_out,
++                booking__check_out__gt=check_in
++            ).distinct()
++            
++            rooms = rooms.exclude(id__in=unavailable_rooms)
++        except ValueError:
++            messages.error(request, "Invalid date format")
++    
++    # Filter by number of guests
++    if guests:
++        try:
++            rooms = rooms.filter(capacity__gte=int(guests))
++        except ValueError:
++            messages.error(request, "Invalid number of guests")
++    
++    # Filter by room type
++    if room_type:
++        rooms = rooms.filter(room_type=room_type)
++    
++    context = {
++        'rooms': rooms,
++        'room_types': Room.ROOM_TYPES,
++        'check_in': check_in,
++        'check_out': check_out,
++        'guests': guests,
++        'room_type': room_type
++    }
++    
++    return render(request, 'hotel_app/room_list.html', context)
++
++def room_detail(request, pk):
++    room = get_object_or_404(Room, pk=pk)
++    # Get upcoming bookings for availability calendar
++    upcoming_bookings = room.booking_set.filter(
++        check_out__gte=timezone.now().date()
++    ).order_by('check_in')
++    
++    context = {
++        'room': room,
++        'upcoming_bookings': upcoming_bookings,
++        'next_available': room.get_next_available_date()
++    }
++    return render(request, 'hotel_app/room_detail.html', context)
++
++@login_required
++def booking_form(request):
++    room_id = request.GET.get('room_id')
++    check_in = request.GET.get('check_in')
++    check_out = request.GET.get('check_out')
++    
++    if room_id:
++        room = get_object_or_404(Room, id=room_id)
++        initial_data = {'room': room}
++        
++        if check_in and check_out:
++            initial_data.update({
++                'check_in': check_in,
++                'check_out': check_out
++            })
++    else:
++        room = None
++        initial_data = {}
++
++    if request.method == 'POST':
++        form = BookingForm(request.POST)
++        if form.is_valid():
++            booking = form.save(commit=False)
++            if room:
++                booking.room = room
++            booking.guest = request.user
++            
++            try:
++                booking.clean()  # Run model validation
++                booking.save()
++                messages.success(request, 'Booking successful!')
++                return redirect('booking_confirmation', booking_id=booking.id)
++            except ValidationError as e:
++                messages.error(request, str(e))
++        else:
++            for error in form.errors.values():
++                messages.error(request, error)
++    else:
++        form = BookingForm(initial=initial_data)
++
++    context = {
++        'form': form,
++        'room': room,
++        'available_rooms': Room.objects.filter(is_available=True)
++    }
++    return render(request, 'hotel_app/booking_form.html', context)
++
++@login_required
++def booking_list(request):
++    bookings = Booking.objects.filter(guest=request.user).order_by('-created_at')
++    return render(request, 'hotel_app/booking_list.html', {'bookings': bookings})
++
++def booking_confirmation(request, booking_id):
++    booking = get_object_or_404(Booking, id=booking_id)
++    total_price = booking.get_total_price()
++    return render(request, 'hotel_app/booking_confirmation.html', {
++        'booking': booking,
++        'total_price': total_price
++    })
++
++def logout_success(request):
++    messages.success(request, "You have been successfully logged out.")
++    return render(request, 'hotel_app/logout_success.html')
+Now let's update the room list template to improve the room availability display and add filtering:
+
+--- hotel_management/hotel_app/templates/hotel_app/room_list_new.html
++++ hotel_management/hotel_app/templates/hotel_app/room_list_new.html
+@@ -0,0 +1,124 @@
++{% extends 'hotel_app/base.html' %}
++
++{% block title %}Available Rooms{% endblock %}
++
++{% block content %}
++<div class="container mt-4">
++    <h2>Available Rooms</h2>
++    
++    <!-- Search and Filter Form -->
++    <div class="card mb-4">
++        <div class="card-body">
++            <form method="get" class="row g-3">
++                <div class="col-md-3">
++                    <label for="check_in" class="form-label">Check-in Date</label>
++                    <input type="date" class="form-control" id="check_in" name="check_in" 
++                           value="{{ check_in|date:'Y-m-d' }}" min="{{ today|date:'Y-m-d' }}">
++                </div>
++                <div class="col-md-3">
++                    <label for="check_out" class="form-label">Check-out Date</label>
++                    <input type="date" class="form-control" id="check_out" name="check_out" 
++                           value="{{ check_out|date:'Y-m-d' }}" min="{{ today|date:'Y-m-d' }}">
++                </div>
++                <div class="col-md-2">
++                    <label for="guests" class="form-label">Guests</label>
++                    <input type="number" class="form-control" id="guests" name="guests" 
++                           value="{{ guests }}" min="1">
++                </div>
++                <div class="col-md-2">
++                    <label for="room_type" class="form-label">Room Type</label>
++                    <select class="form-select" id="room_type" name="room_type">
++                        <option value="">All Types</option>
++                        {% for type_code, type_name in room_types %}
++                        <option value="{{ type_code }}" {% if room_type == type_code %}selected{% endif %}>
++                            {{ type_name }}
++                        </option>
++                        {% endfor %}
++                    </select>
++                </div>
++                <div class="col-md-2 d-flex align-items-end">
++                    <button type="submit" class="btn btn-primary w-100">Search</button>
++                </div>
++            </form>
++        </div>
++    </div>
++
++    <!-- Messages -->
++    {% if messages %}
++    <div class="messages mb-4">
++        {% for message in messages %}
++        <div class="alert alert-{{ message.tags }}">
++            {{ message }}
++        </div>
++        {% endfor %}
++    </div>
++    {% endif %}
++
++    <!-- Room List -->
++    <div class="row">
++        {% for room in rooms %}
++        <div class="col-md-4 mb-4">
++            <div class="card h-100">
++                <div class="card-body">
++                    <h5 class="card-title">Room {{ room.number }}</h5>
++                    <p class="card-text">
++                        <strong>Type:</strong> {{ room.get_room_type_display }}<br>
++                        <strong>Price:</strong> ${{ room.price }}/night<br>
++                        <strong>Capacity:</strong> {{ room.capacity }} guests<br>
++                        <strong>Description:</strong> {{ room.description }}
++                    </p>
++                    
++                    {% if check_in and check_out %}
++                        {% if room.is_available_for_dates %}
++                            <a href="{% url 'booking_form' %}?room_id={{ room.id }}&check_in={{ check_in|date:'Y-m-d' }}&check_out={{ check_out|date:'Y-m-d' }}" 
++                               class="btn btn-primary">Book Now</a>
++                        {% else %}
++                            <button class="btn btn-secondary" disabled>Not Available</button>
++                            <small class="d-block mt-2">Next available: {{ room.get_next_available_date|date }}</small>
++                        {% endif %}
++                    {% else %}
++                        <a href="{% url 'booking_form' %}?room_id={{ room.id }}" class="btn btn-primary">Book Now</a>
++                    {% endif %}
++                    
++                    <a href="{% url 'room_detail' room.id %}" class="btn btn-info">View Details</a>
++                </div>
++            </div>
++        </div>
++        {% empty %}
++        <div class="col">
++            <div class="alert alert-info">
++                No rooms available matching your criteria. Try different dates or filters.
++            </div>
++        </div>
++        {% endfor %}
++    </div>
++</div>
++
++<!-- Date Validation Script -->
++<script>
++document.addEventListener('DOMContentLoaded', function() {
++    const checkIn = document.getElementById('check_in');
++    const checkOut = document.getElementById('check_out');
++    
++    // Set minimum dates
++    const today = new Date().toISOString().split('T')[0];
++    checkIn.min = today;
++    
++    // Update check-out minimum date when check-in changes
++    checkIn.addEventListener('change', function() {
++        checkOut.min = checkIn.value;
++        if (checkOut.value && checkOut.value < checkIn.value) {
++            checkOut.value = checkIn.value;
++        }
++    });
++    
++    // Validate check-out date on change
++    checkOut.addEventListener('change', function() {
++        if (checkIn.value && checkOut.value < checkIn.value) {
++            alert('Check-out date must be after check-in date');
++            checkOut.value = checkIn.value;
++        }
++    });
++});
++</script>
++{% endblock %}
+Now let's update the room detail template to show more information and availability:
+
+--- hotel_management/hotel_app/templates/hotel_app/room_detail_new.html
++++ hotel_management/hotel_app/templates/hotel_app/room_detail_new.html
+@@ -0,0 +1,111 @@
++{% extends 'hotel_app/base.html' %}
++
++{% block title %}Room Details{% endblock %}
++
++{% block content %}
++<div class="container mt-4">
++    <div class="card">
++        <div class="card-body">
++            <h2 class="card-title">Room {{ room.number }}</h2>
++            
++            <div class="row">
++                <div class="col-md-6">
++                    <h4>Room Information</h4>
++                    <p><strong>Type:</strong> {{ room.get_room_type_display }}</p>
++                    <p><strong>Price:</strong> ${{ room.price }}/night</p>
++                    <p><strong>Capacity:</strong> {{ room.capacity }} persons</p>
++                    <p><strong>Description:</strong> {{ room.description }}</p>
++                    
++                    <!-- Availability Check Form -->
++                    <div class="card mt-4">
++                        <div class="card-body">
++                            <h5>Check Availability</h5>
++                            <form method="get" class="row g-3" id="availability-form">
++                                <div class="col-md-6">
++                                    <label for="check_in" class="form-label">Check-in Date</label>
++                                    <input type="date" class="form-control" id="check_in" name="check_in" 
++                                           min="{{ today|date:'Y-m-d' }}" required>
++                                </div>
++                                <div class="col-md-6">
++                                    <label for="check_out" class="form-label">Check-out Date</label>
++                                    <input type="date" class="form-control" id="check_out" name="check_out" 
++                                           min="{{ today|date:'Y-m-d' }}" required>
++                                </div>
++                                <div class="col-12">
++                                    <button type="submit" class="btn btn-primary">Check Availability</button>
++                                </div>
++                            </form>
++                        </div>
++                    </div>
++                </div>
++                
++                <div class="col-md-6">
++                    <h4>Upcoming Bookings</h4>
++                    {% if upcoming_bookings %}
++                    <div class="list-group">
++                        {% for booking in upcoming_bookings %}
++                        <div class="list-group-item">
++                            <div class="d-flex justify-content-between">
++                                <span>{{ booking.check_in|date }} - {{ booking.check_out|date }}</span>
++                                <span class="badge bg-primary">{{ booking.guests }} guests</span>
++                            </div>
++                        </div>
++                        {% endfor %}
++                    </div>
++                    <div class="mt-3">
++                        <p><strong>Next Available Date:</strong> {{ next_available|date }}</p>
++                    </div>
++                    {% else %}
++                    <p class="text-success">No upcoming bookings - Room is available!</p>
++                    {% endif %}
++                </div>
++            </div>
++            
++            <div class="mt-4">
++                {% if room.is_available %}
++                <a href="{% url 'booking_form' %}?room_id={{ room.id }}" class="btn btn-primary">Book Now</a>
++                {% else %}
++                <button class="btn btn-secondary" disabled>Not Available</button>
++                {% endif %}
++                <a href="{% url 'room_list' %}" class="btn btn-outline-primary">Back to Room List</a>
++            </div>
++        </div>
++    </div>
++</div>
++
++<script>
++document.addEventListener('DOMContentLoaded', function() {
++    const checkIn = document.getElementById('check_in');
++    const checkOut = document.getElementById('check_out');
++    const form = document.getElementById('availability-form');
++    
++    // Set minimum dates
++    const today = new Date().toISOString().split('T')[0];
++    checkIn.min = today;
++    
++    // Update check-out minimum date when check-in changes
++    checkIn.addEventListener('change', function() {
++        checkOut.min = checkIn.value;
++        if (checkOut.value && checkOut.value < checkIn.value) {
++            checkOut.value = checkIn.value;
++        }
++    });
++    
++    // Validate check-out date on change
++    checkOut.addEventListener('change', function() {
++        if (checkIn.value && checkOut.value < checkIn.value) {
++            alert('Check-out date must be after check-in date');
++            checkOut.value = checkIn.value;
++        }
++    });
++    
++    // Handle form submission
++    form.addEventListener('submit', function(e) {
++        e.preventDefault();
++        const checkInDate = checkIn.value;
++        const checkOutDate = checkOut.value;
++        window.location.href = `{% url 'booking_form' %}?room_id={{ room.id }}&check_in=${checkInDate}&check_out=${checkOutDate}`;
++    });
++});
++</script>
++{% endblock %}
+Now let's review the improvements I've made:
+
+Room Model Improvements:
+Added proper room types with choices
+Added methods for checking availability and next available date
+Added Meta ordering for consistent display
+Made room number unique
+Added better string representation
+Booking Model Improvements:
+Added proper validation for dates and capacity
+Added method to calculate total price including services
+Added validation to prevent invalid bookings
+View Improvements:
+Added proper date-based filtering for room availability
+Added room type and capacity filtering
+Improved error handling and validation
+Added better context data for templates
+Template Improvements:
+Added search and filter functionality
+Added date validation with JavaScript
+Improved room availability display
+Added upcoming bookings display
+Added next available date information
+Improved UI/UX with better form handling
+To implement these changes:
+
+Replace the current models.py with models_new.py:
+I apologize for the formatting issues. Let's try a different approach. Since we have created the new files with improvements, you can:
+
+Replace the current models.py with the content of models_new.py
+Replace the current views.py with the content of views_new.py
+Replace the current room_list.html and room_detail.html with their new versions
+The improvements include:
+
+Better Room Management:
+Added proper room type choices
+Added methods for checking availability
+Added better validation
+Added total price calculation
+Enhanced Booking System:
+Added date validation
+Added capacity validation
+Added overlapping booking prevention
+Added service cost calculation
+Improved User Interface:
+Added search and filter functionality
+Added date validation
+Added availability calendar
+Added better error handling
+Better Code Organization:
+Added proper model methods
+Added better validation
+Added better string representations
+Added better error messages
+To apply these changes, you'll need to:
+
+Copy the contents of models_new.py to models.py
+Copy the contents of views_new.py to views.py
+Copy the contents of room_list_new.html to room_list.html
+Copy the contents of room_detail_new.html to room_detail.html
+After making these changes, you'll need to:
+
+Run migrations to apply the model changes:
+python manage.py makemigrations
+python manage.py migrate
+Test the new functionality:
+Room availability checking
+Booking validation
+Search and filtering
+Date validation
+The improvements will provide:
+
+Better user experience
+More reliable booking system
+Better data validation
+More efficient room management
+Better error handling

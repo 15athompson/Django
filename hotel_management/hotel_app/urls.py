@@ -45,6 +45,9 @@ urlpatterns = [
     path('booking/', views.booking_form, name='booking_form'),  # Booking form view
     path('booking/confirmation/<int:booking_id>/', views.booking_confirmation, name='booking_confirmation'),  # Booking confirmation view
     path('bookings/', views.booking_list, name='booking_list'),  # Booking list view
+    path('bookings/create/', views.create_booking, name='create_booking'),  # Create booking view
+    path('bookings/edit/<int:booking_id>/', views.edit_booking, name='edit_booking'),  # Edit booking view
+    path('bookings/delete/<int:booking_id>/', views.delete_booking, name='delete_booking'),  # Delete booking view
     path('login/', auth_views.LoginView.as_view(template_name='hotel_app/login.html'), name='login'),  # Login view
     path('logout/', CustomLogoutView.as_view(), name='logout'),  # Use the custom logout view
     path('logout/success/', views.logout_success, name='logout_success'),  # Optional: Redirect to a success page

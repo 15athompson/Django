@@ -1,7 +1,7 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth.models import User
-from .models import Room, Booking
+from .models import Room, Booking 
 
 class SystemTests(TestCase):
     def setUp(self):

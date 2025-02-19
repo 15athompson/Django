@@ -1,0 +1,69 @@
+from django.test import TestCase
+from django.urls import reverse
+import random
+import string
+from hotel_app.models import Room, Booking
+from django.contrib.auth.models import User
+from datetime import datetime, timedelta
+
+class StressTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # Create test data
+        cls.user = User.objects.create_user(
+            username='testuser',
+            password='testpass123'
+        )
+        
+        # Create 100 rooms
+        for i in range(100):
+            Room.objects.create(
+                number=f'Room {i}',
+                room_type=random.choice(['Single', 'Double', 'Suite']),
+                price=random.randint(50, 300),
+                capacity=random.randint(1, 4),
+                description='Test room',
+                is_available=True
+            )
+
+    def test_high_concurrency_booking(self):
+        """Test handling of multiple concurrent booking requests"""
+        rooms = Room.objects.all()
+        users = []
+        
+        # Create 100 users
+        for i in range(100):
+            user = User.objects.create_user(
+                username=f'user{i}',
+                password=''.join(random.choices(string.ascii_letters, k=8))
+            )
+            users.append(user)
+        
+        # Simulate concurrent bookings
+        for user in users:
+            self.client.login(username=user.username, password=user.password)
+            room = rooms[i % len(rooms)]  # Ensure each user books a different room
+            check_in = datetime.now().date() + timedelta(days=random.randint(1, 30))
+            check_out = check_in + timedelta(days=random.randint(1, 14))
+
+            response = self.client.post(reverse('booking_form'), {
+                'room': room.id,
+                'check_in': check_in.strftime('%Y-%m-%d'),
+                'check_out': check_out.strftime('%Y-%m-%d'),
+                'guest_name': user.username,
+                'guest_email': f'{user.username}@example.com'
+            })
+
+            self.assertEqual(response.status_code, 302)
+            self.assertTrue(Booking.objects.filter(room=room).exists())
+
+    def test_high_volume_room_search(self):
+        """Test performance of room search with high volume of requests"""
+        for _ in range(1000):
+            response = self.client.get(reverse('room_list'), {
+                'check_in': '2025-03-01',
+                'check_out': '2025-03-05',
+                'guests': random.randint(1, 4)
+            })
+            self.assertEqual(response.status_code, 200)
+            self.assertContains(response, 'Available Rooms')

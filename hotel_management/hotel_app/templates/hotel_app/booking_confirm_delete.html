@@ -1,0 +1,40 @@
+{% extends 'hotel_app/base.html' %}
+
+{% block title %}Confirm Deletion{% endblock %}
+
+{% block content %}
+<h2>Confirm Deletion</h2>
+
+<p>Are you sure you want to delete the following booking?</p>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Booking ID</th>
+                <th>Room</th>
+                <th>Check-in</th>
+                <th>Check-out</th>
+                <th>Guests</th>
+                <th>Special Requests</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ booking.id }}</td>
+                <td>{{ booking.room.number }}</td>
+                <td>{{ booking.check_in }}</td>
+                <td>{{ booking.check_out }}</td>
+                <td>{{ booking.guests }}</td>
+                <td>{{ booking.special_requests }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<form method="post" action="{% url 'delete_booking' booking.id %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Confirm Deletion</button>
+    <a href="{% url 'booking_list' %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

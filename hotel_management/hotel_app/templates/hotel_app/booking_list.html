@@ -5,6 +5,7 @@
 {% block content %}
 <div class="container mt-4">
     <h2>Bookings</h2>
+    <a href="{% url 'create_booking' %}" class="btn btn-primary mb-3">Create New Booking</a>
     {% if bookings %}
         <div class="table-responsive">
             <table class="table table-striped">
@@ -22,21 +23,25 @@
                 <tbody>
                     {% for booking in bookings %}
                     <tr>
-                        <td>{{ booking.id }}</td>
-                        <td>Room {{ booking.room.number }}</td>
-                        <td>{{ booking.room.room_type }}</td>
-                        <td>{{ booking.check_in }}</td>
-                        <td>{{ booking.check_out }}</td>
-                        <td>{{ booking.guests }}</td>
-                        <td>
-                            {% if booking.check_in > today %}
-                                Upcoming
-                            {% elif booking.check_out < today %}
-                                Completed
-                            {% else %}
-                                Active
-                            {% endif %}
-                        </td>
+                    <td>{{ booking.id }}</td>
+                    <td>Room {{ booking.room.number }}</td>
+                    <td>{{ booking.room.room_type }}</td>
+                    <td>{{ booking.check_in }}</td>
+                    <td>{{ booking.check_out }}</td>
+                    <td>{{ booking.guests }}</td>
+                    <td>
+                        {% if booking.check_in > today %}
+                            Upcoming
+                        {% elif booking.check_out < today %}
+                            Completed
+                        {% else %}
+                            Active
+                        {% endif %}
+                    </td>
+                    <td class="text-right">
+                        <a href="{% url 'edit_booking' booking.id %}" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="{% url 'delete_booking' booking.id %}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
                     </tr>
                     {% endfor %}
                 </tbody>

@@ -10,15 +10,35 @@ to prompt:
 --> make tests compatible with the existing project, not the other way around
 --> create system tests for this project in a file named system_tests3.py (using deepseek)
 
-- 
+- system testing (done)
+- write acceptance tests (do this only after system testing - done)
+- write performance tests for this project in a file named performance_tests.py
 [other tests: performance (load, stress, scalability, stability), usability, compatibility]
 - refactor and optimise code
 - suggest improvements that can be made to the project
 - now for user clarification, a room should be classed as "unavailable" when navigating to "Rooms" if the room has already been booked, and the "Book Now" button should be shaded out and the user should not be able to click on it
 -  now suggest how to improve the project and implement them whilst using a test driven development approach
-- now suggest how to improve the project and implement them. you musr do this step by step so we can easily isolate and detect errors and revert back to a previous change if needed. prioritise maintaining and improving functionality above all else.
+- now suggest how to improve the project and implement them. you must do this step by step so we can easily isolate and detect errors and revert back to a previous change if needed. prioritise maintaining and improving functionality above all else.
 
 to do:
+- add doc strings to all files (Zencoder command)
+
+- CRUD for (bookings) --> be able to edit any fields i want while keeping other fields the same e.g. changing checkin/out date without changing the room / room type
+
+- (not needed) implement role based access control (RestAPI) --> only manager should be able to view and edit bookings made by the guest
+
+- styling: clear display and icons for errors and messages like exceeding no. of guests or wrong check-in/out dates (clear error handling)
+
+- allow users to delete their own bookings
+- allow users to edit their own bookings
+- allow users to cancel their own bookings
+- allow users to search for specific bookings
+- allow users to filter bookings based on certain criteria (e.g., date range, status)
+- allow users to export bookings data in various formats (CSV, Excel, PDF)
+- allow users to print or download a copy of their booking details
+- allow users to receive email notifications about upcoming bookings or changes to their booking
+- provide clear instructions and guidance on how to use the booking system effectively
+
 - if in the RestAPI endpoint i specify that a room is not available (checkbox) at http://localhost:8000/api/rooms/, then it should not show the room as available at http://127.0.0.1:8000/rooms/
 - prevent double bookings (done) -> should display room unavailable when go to "Rooms" on navigation bar --> book now button should be disabled
 - the user should not be able to add a room to the database if that room already exists in the database --> should just show error message, not success message

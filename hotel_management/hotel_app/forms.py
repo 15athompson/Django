@@ -1,4 +1,5 @@
 from django import forms
+from django.utils import timezone
 from .models import Booking, Room
 
 class BookingForm(forms.ModelForm):
@@ -20,6 +21,12 @@ class BookingForm(forms.ModelForm):
 
         if check_in and check_out and check_in >= check_out:
             raise forms.ValidationError("Check-out date must be after check-in date")
+
+        # print(timezone.now().date())
+        # print(check_in)
+
+        if check_in and check_in < timezone.now().date():
+            raise forms.ValidationError({'check_in': "Check-in date cannot be in the past"})
 
         if room and check_in and check_out:
             overlapping_bookings = Booking.objects.filter(

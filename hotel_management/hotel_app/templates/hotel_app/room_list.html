@@ -1,4 +1,3 @@
-<!-- hotel_app/templates/hotel_app/room_list.html -->
 {% extends 'hotel_app/base.html' %}
 
 {% block title %}Available Rooms{% endblock %}
@@ -6,61 +5,136 @@
 {% block content %}
 <div class="container mt-4">
     <h2>Available Rooms</h2>
+    
+    <!-- Quick Search -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-10">
+                    <label for="search" class="form-label">Quick Search (Room Number or Type)</label>
+                    <input type="text" class="form-control" id="search" name="search" 
+                           value="{{ search_query }}" placeholder="Enter room number or type (e.g., 101 or 'deluxe')">
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Advanced Search and Filter Form -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-3">
+                    <label for="check_in" class="form-label">Check-in Date</label>
+                    <input type="date" class="form-control" id="check_in" name="check_in" 
+                           value="{{ check_in|date:'Y-m-d' }}" min="{{ today|date:'Y-m-d' }}">
+                </div>
+                <div class="col-md-3">
+                    <label for="check_out" class="form-label">Check-out Date</label>
+                    <input type="date" class="form-control" id="check_out" name="check_out" 
+                           value="{{ check_out|date:'Y-m-d' }}" min="{{ today|date:'Y-m-d' }}">
+                </div>
+                <div class="col-md-2">
+                    <label for="guests" class="form-label">Guests</label>
+                    <input type="number" class="form-control" id="guests" name="guests" 
+                           value="{{ guests }}" min="1">
+                </div>
+                <div class="col-md-2">
+                    <label for="room_type" class="form-label">Room Type</label>
+                    <select class="form-select" id="room_type" name="room_type">
+                        <option value="">All Types</option>
+                        {% for type_code, type_name in room_types %}
+                        <option value="{{ type_code }}" {% if room_type == type_code %}selected{% endif %}>
+                            {{ type_name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Messages -->
+    {% if messages %}
+    <div class="messages mb-4">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Room List -->
     <div class="row">
         {% for room in rooms %}
         <div class="col-md-4 mb-4">
-            <div class="card">
+            <div class="card h-100">
                 <div class="card-body">
                     <h5 class="card-title">Room {{ room.number }}</h5>
-                    <p class="card-text"><strong>Type:</strong> {{ room.room_type }}</p>
-                    <p class="card-text"><strong>Price:</strong> ${{ room.price }}/night</p>
-                    <p class="card-text"><strong>Capacity:</strong> {{ room.capacity }} guests</p>
-                    <p class="card-text"><strong>Description:</strong> {{ room.description }}</p>
-                    <p class="card-text"><strong>Status:</strong> 
-                        {% if bookings %}
-                            {% with is_booked=False %}
-                                {% for booking in bookings %}
-                                    {% if booking.room == room %}
-                                        {% with is_booked=True %}
-                                        {% endwith %}
-                                    {% endif %}
-                                {% endfor %}
-                                {% if is_booked %}
-                                    Unavailable
-                                {% else %}
-                                    Available
-                                {% endif %}
-                            {% endwith %}
-                        {% else %}
-                            Available
-                        {% endif %}
+                    <p class="card-text">
+                        <strong>Type:</strong> {{ room.get_room_type_display }}<br>
+                        <strong>Price:</strong> ${{ room.price }}/night<br>
+                        <strong>Capacity:</strong> {{ room.capacity }} guests<br>
+                        <strong>Description:</strong> {{ room.description }}
                     </p>
-                    {% if bookings %}
-                        {% with is_booked=False %}
-                            {% for booking in bookings %}
-                                {% if booking.room == room %}
-                                    {% with is_booked=True %}
-                                    {% endwith %}
-                                {% endif %}
-                            {% endfor %}
-                            {% if is_booked %}
-                                <button class="btn btn-secondary" disabled>Not Available</button>
-                            {% else %}
-                                <a href="{% url 'booking_form' %}?room_id={{ room.id }}" class="btn btn-primary">Book Now</a>
-                            {% endif %}
-                        {% endwith %}
+                    
+                    {% if check_in and check_out %}
+                        {% if room.is_available_for_dates %}
+                            <a href="{% url 'booking_form' %}?room_id={{ room.id }}&check_in={{ check_in|date:'Y-m-d' }}&check_out={{ check_out|date:'Y-m-d' }}" 
+                               class="btn btn-primary">Book Now</a>
+                        {% else %}
+                            <button class="btn btn-secondary" disabled>Not Available</button>
+                            <small class="d-block mt-2">Next available: {{ room.get_next_available_date|date }}</small>
+                        {% endif %}
                     {% else %}
                         <a href="{% url 'booking_form' %}?room_id={{ room.id }}" class="btn btn-primary">Book Now</a>
                     {% endif %}
+                    
                     <a href="{% url 'room_detail' room.id %}" class="btn btn-info">View Details</a>
                 </div>
             </div>
         </div>
         {% empty %}
         <div class="col">
-            <p>No rooms available at the moment.</p>
+            <div class="alert alert-info">
+                No rooms available matching your criteria. Try different dates or filters.
+            </div>
         </div>
         {% endfor %}
     </div>
 </div>
+
+<!-- Date Validation Script -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const checkIn = document.getElementById('check_in');
+    const checkOut = document.getElementById('check_out');
+    
+    // Set minimum dates
+    const today = new Date().toISOString().split('T')[0];
+    checkIn.min = today;
+    
+    // Update check-out minimum date when check-in changes
+    checkIn.addEventListener('change', function() {
+        checkOut.min = checkIn.value;
+        if (checkOut.value && checkOut.value < checkIn.value) {
+            checkOut.value = checkIn.value;
+        }
+    });
+    
+    // Validate check-out date on change
+    checkOut.addEventListener('change', function() {
+        if (checkIn.value && checkOut.value < checkIn.value) {
+            alert('Check-out date must be after check-in date');
+            checkOut.value = checkIn.value;
+        }
+    });
+});
+</script>
 {% endblock %}
