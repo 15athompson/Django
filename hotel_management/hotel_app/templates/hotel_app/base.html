@@ -51,6 +51,15 @@
         </div>
     </nav>
 
+    <!-- Back Button (hidden on home page) -->
+    {% if request.resolver_match.url_name != 'home' %}
+    <div class="container mt-3">
+        <button onclick="history.back()" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back
+        </button>
+    </div>
+    {% endif %}
+
     <!-- Main Content -->
     <div class="container mt-4">
         {% block content %}
@@ -59,7 +68,7 @@
 
     <!-- Footer -->
     <footer class="bg-dark text-white text-center py-3 mt-5">
-        <p>&copy; 2024 Hotel Management System. All rights reserved.</p>
+        <p>&copy; 2025 Hotel Management System. All rights reserved.</p>
     </footer>
 
     <!-- Bootstrap JS -->

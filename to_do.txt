@@ -5,7 +5,8 @@
 how do i view the bookings. | API endpoints | logout
 
 to prompt:
-- hotel_app/forms.py: Implement custom validation logic in BookingForm to prevent overlapping bookings and enforce business rules.
+- add a back button to each screen to improve navigation for the user
+- make booking_edit page look more presentable
 [unit tests for the system, not just unit tests testing what is just in tests.py
 ; test-driven development [TDD] ]
 --> make tests compatible with the existing project, not the other way around
@@ -56,6 +57,7 @@ what it should do (to catch up):
 
 
 done:
+- hotel_app/forms.py: Implement custom validation logic in BookingForm to prevent overlapping bookings and enforce business rules.
 - HTML page must be rendered for the rooms and detail rooms available
 - show a list of bookings made 
 - complete booking when click submit button and take the user to a confirmation page
